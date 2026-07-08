@@ -12,7 +12,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,700;1,9..40,400&display=swap" rel="stylesheet">
 
-  <link rel="stylesheet" href="styles.css?v=20260708b">
+  <link rel="stylesheet" href="styles.css?v=20260708c">
 </head>
 <body>
   <a href="#main" class="skip-link">Saltar al contenido</a>
@@ -156,6 +156,10 @@
 
               </g>
               <!-- ══ END ROTATING GROUP ══ -->
+
+              <!-- Invisible pivot marker — JS reads THIS rect, not the SVG's
+                   (SVG getBoundingClientRect includes overflow and gives wrong center) -->
+              <circle id="cameraPivot" cx="140" cy="130" r="1" fill="none" stroke="none"/>
 
               <!-- Mount base — FIXED, rendered above the rotating group -->
               <circle cx="140" cy="130" r="16"
@@ -581,6 +585,6 @@
   <!-- Scripts — GSAP from CDN, no ES modules, IIFE pattern -->
   <script defer src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
   <script defer src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
-  <script defer src="main.js?v=20260708b"></script>
+  <script defer src="main.js?v=20260708c"></script>
 </body>
 </html>

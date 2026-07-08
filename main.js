@@ -222,12 +222,27 @@
     if (!body || !svg) return;
 
     /*
-      Pivot at SVG center (140, 130). Camera body drawn pointing RIGHT at 0°,
+      Pivot coords in SVG space (140,130). Camera drawn pointing RIGHT at 0°,
       so atan2(dy,dx) directly makes the lens face the mouse — no offset needed.
-      ±150° clamp keeps the camera from flipping fully backward.
+
+      IMPORTANT: we read the pivot position from #cameraPivot (a tiny fixed SVG
+      shape), NOT from the SVG element itself. With overflow:visible the SVG's
+      getBoundingClientRect() expands to include the beam (~900px wide), placing
+      the calculated center far to the right of the actual camera.
     */
-    var PX = 140, PY = 130, VW = 280, VH = 260;
+    var SVG_PX = 140, SVG_PY = 130;
     var cur = 0, tgt = 0;
+    var pivotEl = document.getElementById("cameraPivot");
+
+    function getPivotScreen() {
+      if (pivotEl) {
+        var pr = pivotEl.getBoundingClientRect();
+        return { x: pr.left + pr.width / 2, y: pr.top + pr.height / 2 };
+      }
+      /* Fallback: use SVG rect + viewport-fraction if marker unavailable */
+      var r = svg.getBoundingClientRect();
+      return { x: r.left + r.width * 0.5, y: r.top + r.height * 0.5 };
+    }
 
     if (!fineHover || window.innerWidth < 768) {
       /* Mobile: slow pendulum sweep */
@@ -236,25 +251,26 @@
         a += 0.35;
         tgt = Math.sin(a * Math.PI / 180) * 55;
         cur += (tgt - cur) * 0.04;
-        body.setAttribute("transform", "rotate(" + cur.toFixed(2) + "," + PX + "," + PY + ")");
+        body.setAttribute("transform",
+          "rotate(" + cur.toFixed(2) + "," + SVG_PX + "," + SVG_PY + ")");
         requestAnimationFrame(autoRotate);
       })();
       return;
     }
 
     window.addEventListener("mousemove", function (e) {
-      var rect = svg.getBoundingClientRect();
-      var sx = rect.left + rect.width  * (PX / VW);
-      var sy = rect.top  + rect.height * (PY / VH);
-      var dx = e.clientX - sx;
-      var dy = e.clientY - sy;
+      var p = getPivotScreen();
+      var dx = e.clientX - p.x;
+      var dy = e.clientY - p.y;
       var angle = Math.atan2(dy, dx) * 180 / Math.PI;
-      tgt = Math.max(-150, Math.min(150, angle));
+      /* ±160° lets the camera look hard left without crossing the ±180° snap */
+      tgt = Math.max(-160, Math.min(160, angle));
     }, { passive: true });
 
     (function loop() {
       cur += (tgt - cur) * 0.08;
-      body.setAttribute("transform", "rotate(" + cur.toFixed(2) + "," + PX + "," + PY + ")");
+      body.setAttribute("transform",
+        "rotate(" + cur.toFixed(2) + "," + SVG_PX + "," + SVG_PY + ")");
       requestAnimationFrame(loop);
     })();
   }
