@@ -217,34 +217,41 @@
 
   /* ─── CAMERA MOUSE FOLLOW ────────────────────────────────────── */
   function initCamera() {
-    var lens = $("#cameraLens");
-    if (!lens) return;
+    var svg  = $("#cameraRig");
+    var body = $("#cameraBody");
+    if (!body || !svg) return;
 
-    var crx = 0, cry = 0, trx = 0, try_ = 0;
+    /* SVG viewBox dimensions & pivot coords */
+    var PX = 140, PY = 60, VW = 280, VH = 260, MAX = 72;
+    var cur = 0, tgt = 0;
 
     if (!fineHover || window.innerWidth < 768) {
-      /* Mobile: slow automatic rotation */
-      var ang = 0;
+      /* Mobile: pendulum auto-rotate */
+      var a = 0;
       (function autoRotate() {
-        ang += 0.5;
-        var rad = (ang * Math.PI) / 180;
-        lens.style.transform = "rotateX(" + (Math.sin(rad) * 14) + "deg) rotateY(" + (Math.cos(rad) * 14) + "deg)";
+        a += 0.4;
+        tgt = Math.sin(a * Math.PI / 180) * 40;
+        cur += (tgt - cur) * 0.05;
+        body.setAttribute("transform", "rotate(" + cur.toFixed(2) + "," + PX + "," + PY + ")");
         requestAnimationFrame(autoRotate);
       })();
       return;
     }
 
     window.addEventListener("mousemove", function (e) {
-      var nx = (e.clientX / window.innerWidth)  * 2 - 1;
-      var ny = (e.clientY / window.innerHeight) * 2 - 1;
-      trx = -ny * 20;
-      try_ = nx * 20;
+      var rect = svg.getBoundingClientRect();
+      var sx = rect.left + rect.width  * (PX / VW);
+      var sy = rect.top  + rect.height * (PY / VH);
+      var dx = e.clientX - sx;
+      var dy = e.clientY - sy;
+      /* atan2 → offset -90° because camera points down at 0° */
+      var angle = Math.atan2(dy, dx) * 180 / Math.PI - 90;
+      tgt = Math.max(-MAX, Math.min(MAX, angle));
     }, { passive: true });
 
     (function loop() {
-      crx += (trx - crx) * 0.08;
-      cry += (try_ - cry) * 0.08;
-      lens.style.transform = "rotateX(" + crx + "deg) rotateY(" + cry + "deg)";
+      cur += (tgt - cur) * 0.08;
+      body.setAttribute("transform", "rotate(" + cur.toFixed(2) + "," + PX + "," + PY + ")");
       requestAnimationFrame(loop);
     })();
   }
