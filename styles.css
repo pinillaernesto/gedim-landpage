@@ -201,7 +201,7 @@ ul { list-style: none; }
   height: 72px;
   overflow: hidden;
   display: block;
-  background: #070d14;
+  background: #000B27;
 }
 .header-pipes-svg {
   display: block;
@@ -212,7 +212,7 @@ ul { list-style: none; }
 /* ── Brand bar (top row) ── */
 .header-bar {
   height: 110px;
-  background: rgba(5,9,14,.97);
+  background: rgba(0,11,39,.97);
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
 }
@@ -228,7 +228,7 @@ ul { list-style: none; }
 
 /* ── Spline robot (left) ── */
 .header-robot {
-  width: 270px;
+  width: 210px;
   height: 110px;
   overflow: hidden;
   flex-shrink: 0;
@@ -238,10 +238,10 @@ ul { list-style: none; }
 }
 .header-robot spline-viewer {
   position: absolute;
-  width: 380px;
-  height: 440px;
-  bottom: -120px;
-  left: -30px;
+  width: 250px;
+  height: 300px;
+  bottom: -70px;
+  left: -20px;
   --spline-viewer-bg: transparent;
 }
 
@@ -596,10 +596,10 @@ ul { list-style: none; }
    HERO CAMERA PANEL — upper-right: PTZ camera + 4 CCTV feeds
    ============================================================= */
 .hero-camera-panel {
-  position: absolute;
-  top: calc(var(--nav-h) + .5rem);
+  position: fixed;
+  top: calc(var(--nav-h) + .75rem);
   right: var(--gutter);
-  z-index: 5;
+  z-index: 10;
   pointer-events: none;
   flex-direction: column;
   align-items: flex-end;
