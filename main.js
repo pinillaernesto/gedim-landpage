@@ -221,17 +221,21 @@
     var body = $("#cameraBody");
     if (!body || !svg) return;
 
-    /* SVG viewBox dimensions & pivot coords */
-    var PX = 140, PY = 60, VW = 280, VH = 260, MAX = 72;
+    /*
+      Pivot at SVG center (140, 130). Camera body drawn pointing RIGHT at 0°,
+      so atan2(dy,dx) directly makes the lens face the mouse — no offset needed.
+      ±150° clamp keeps the camera from flipping fully backward.
+    */
+    var PX = 140, PY = 130, VW = 280, VH = 260;
     var cur = 0, tgt = 0;
 
     if (!fineHover || window.innerWidth < 768) {
-      /* Mobile: pendulum auto-rotate */
+      /* Mobile: slow pendulum sweep */
       var a = 0;
       (function autoRotate() {
-        a += 0.4;
-        tgt = Math.sin(a * Math.PI / 180) * 40;
-        cur += (tgt - cur) * 0.05;
+        a += 0.35;
+        tgt = Math.sin(a * Math.PI / 180) * 55;
+        cur += (tgt - cur) * 0.04;
         body.setAttribute("transform", "rotate(" + cur.toFixed(2) + "," + PX + "," + PY + ")");
         requestAnimationFrame(autoRotate);
       })();
@@ -244,9 +248,8 @@
       var sy = rect.top  + rect.height * (PY / VH);
       var dx = e.clientX - sx;
       var dy = e.clientY - sy;
-      /* atan2 → offset -90° because camera points down at 0° */
-      var angle = Math.atan2(dy, dx) * 180 / Math.PI - 90;
-      tgt = Math.max(-MAX, Math.min(MAX, angle));
+      var angle = Math.atan2(dy, dx) * 180 / Math.PI;
+      tgt = Math.max(-150, Math.min(150, angle));
     }, { passive: true });
 
     (function loop() {

@@ -423,10 +423,13 @@ ul { list-style: none; }
 /* Camera SVG */
 .camera-wrap {
   width: clamp(200px, 42vw, 280px);
+  /* overflow: visible lets the beam cone extend beyond the SVG boundary */
+  overflow: visible;
   filter: drop-shadow(0 0 40px rgba(0,255,136,.12));
   animation: cameraFloat 6s ease-in-out infinite;
 }
-.camera-svg { width: 100%; height: auto; }
+/* overflow: visible required on the SVG element itself (SVG default is hidden) */
+.camera-svg { width: 100%; height: auto; overflow: visible; }
 
 /* Camera LED blink */
 .camera-led {

@@ -12,7 +12,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,700;1,9..40,400&display=swap" rel="stylesheet">
 
-  <link rel="stylesheet" href="styles.css?v=20260708">
+  <link rel="stylesheet" href="styles.css?v=20260708b">
 </head>
 <body>
   <a href="#main" class="skip-link">Saltar al contenido</a>
@@ -83,96 +83,103 @@
         <!-- Camera SVG column -->
         <div class="hero-visual" aria-hidden="true">
           <div class="camera-wrap" id="cameraWrap">
-            <svg id="cameraRig" class="camera-svg" viewBox="0 0 280 260" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <!--
+              PIVOT = center (140,130). Camera drawn pointing RIGHT at 0° so
+              atan2(dy,dx) tracks the mouse directly — no angle offset needed.
+              overflow="visible" lets the beam cone exit the viewBox freely.
+            -->
+            <svg id="cameraRig" class="camera-svg" viewBox="0 0 280 260" fill="none"
+                 xmlns="http://www.w3.org/2000/svg" overflow="visible">
               <defs>
                 <radialGradient id="lensGrad" cx="38%" cy="32%" r="65%">
                   <stop offset="0%"   stop-color="#1a3a5c"/>
                   <stop offset="55%"  stop-color="#060e1c"/>
                   <stop offset="100%" stop-color="#020508"/>
                 </radialGradient>
-                <filter id="ledBloom" x="-120%" y="-120%" width="340%" height="340%">
-                  <feGaussianBlur in="SourceGraphic" stdDeviation="3" result="b"/>
-                  <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+                <filter id="ledBloom" x="-150%" y="-150%" width="400%" height="400%">
+                  <feGaussianBlur in="SourceGraphic" stdDeviation="3.5"/>
                 </filter>
               </defs>
 
-              <!-- Ceiling line -->
-              <line x1="0" y1="14" x2="280" y2="14" stroke="#00FF88" stroke-width="0.4" opacity="0.12"/>
-
-              <!-- Mount plate (fixed) -->
-              <rect x="112" y="14" width="56" height="14" rx="4" fill="#141f2e" stroke="#1e3350" stroke-width="1"/>
-              <circle cx="124" cy="21" r="2.5" fill="#0a1220"/>
-              <circle cx="156" cy="21" r="2.5" fill="#0a1220"/>
-
-              <!-- Bracket arm (fixed) -->
-              <rect x="135" y="28" width="10" height="26" rx="2.5" fill="#1a2a40"/>
-
-              <!-- Outer pivot housing (fixed) -->
-              <circle cx="140" cy="60" r="17" fill="#0d1828" stroke="#1e3a5a" stroke-width="1.5"/>
-              <circle cx="140" cy="60" r="11" fill="#080f1c" stroke="rgba(0,255,136,0.2)" stroke-width="1"/>
-
-              <!-- ══ ROTATING GROUP ══ pivots at 140,60 -->
+              <!-- ══ ROTATING GROUP ══  pivots at 140,130 (center of SVG) -->
               <g id="cameraBody">
 
-                <!-- Pivot ball -->
-                <circle cx="140" cy="60" r="5.5" fill="#00FF88" opacity="0.8" filter="url(#ledBloom)"/>
+                <!-- Detection beam — layered cones that widen + fade with distance.
+                     Coordinates in SVG space; overflow="visible" reveals them all. -->
+                <path d="M232,130 L900,95  L900,165 Z" fill="rgba(0,255,136,0.11)"/>
+                <path d="M232,130 L900,62  L900,198 Z" fill="rgba(0,255,136,0.055)"/>
+                <path d="M232,130 L900,24  L900,236 Z" fill="rgba(0,255,136,0.028)"/>
+                <path d="M232,130 L900,-14 L900,274 Z" fill="rgba(0,255,136,0.013)"/>
+                <line x1="232" y1="130" x2="900" y2="130"
+                      stroke="#00FF88" stroke-width="0.7" opacity="0.20"/>
 
-                <!-- Camera neck -->
-                <rect x="136.5" y="58" width="7" height="38" rx="2.5" fill="#1a2840"/>
+                <!-- Short arm from pivot to housing back -->
+                <rect x="140" y="127" width="30" height="6" rx="2" fill="#1a2840"/>
 
-                <!-- Housing body -->
-                <rect x="96" y="92" width="88" height="40" rx="12" fill="#0d1a2a" stroke="#1a2d45" stroke-width="1.2"/>
-                <!-- Rear cap -->
-                <rect x="165" y="96" width="17" height="32" rx="7" fill="#0a1422"/>
-                <!-- Cable exit -->
-                <circle cx="176" cy="112" r="3.5" fill="#060d16" stroke="#1a2840" stroke-width="1"/>
-
-                <!-- Front housing -->
-                <rect x="98"  y="94" width="22" height="36" rx="7" fill="#111e30"/>
+                <!-- Main housing body -->
+                <rect x="168" y="112" width="68" height="36" rx="10"
+                      fill="#0d1a2a" stroke="#1a2d45" stroke-width="1.2"/>
+                <!-- Rear cap (arm side) -->
+                <rect x="168" y="116" width="20" height="28" rx="7" fill="#0a1422"/>
+                <!-- Front section (lens side) -->
+                <rect x="212" y="114" width="22" height="32" rx="7" fill="#111e30"/>
 
                 <!-- Lens bezel -->
-                <circle cx="109" cy="112" r="17" fill="#060e1a" stroke="#1a3355" stroke-width="1.8"/>
+                <circle cx="222" cy="130" r="15.5"
+                        fill="#060e1a" stroke="#1a3355" stroke-width="1.8"/>
                 <!-- Lens glass -->
-                <circle cx="109" cy="112" r="12.5" fill="url(#lensGrad)"/>
+                <circle cx="222" cy="130" r="11"   fill="url(#lensGrad)"/>
                 <!-- Inner ring -->
-                <circle cx="109" cy="112" r="8.5" fill="#030810" stroke="#0e2035" stroke-width="0.75"/>
+                <circle cx="222" cy="130" r="7.5"
+                        fill="#030810" stroke="#0e2035" stroke-width="0.75"/>
                 <!-- Aperture -->
-                <circle cx="109" cy="112" r="4.5" fill="#010306"/>
+                <circle cx="222" cy="130" r="4"    fill="#010306"/>
                 <!-- Reflection -->
-                <ellipse cx="104" cy="107" rx="3.5" ry="2.2" fill="rgba(100,180,255,0.28)" transform="rotate(-25 104 107)"/>
-                <!-- Green accent ring -->
-                <circle cx="109" cy="112" r="17" fill="none" stroke="#00FF88" stroke-width="0.5" opacity="0.22"/>
+                <ellipse cx="217" cy="125" rx="3.2" ry="2"
+                         fill="rgba(100,180,255,0.28)" transform="rotate(-25 217 125)"/>
+                <!-- Accent ring -->
+                <circle cx="222" cy="130" r="15.5"
+                        fill="none" stroke="#00FF88" stroke-width="0.5" opacity="0.22"/>
 
                 <!-- Vent lines -->
-                <line x1="136" y1="95" x2="136" y2="130" stroke="#1a2d45" stroke-width="0.7" opacity="0.5"/>
-                <line x1="144" y1="95" x2="144" y2="130" stroke="#1a2d45" stroke-width="0.7" opacity="0.5"/>
-                <line x1="152" y1="95" x2="152" y2="130" stroke="#1a2d45" stroke-width="0.7" opacity="0.5"/>
+                <line x1="192" y1="114" x2="192" y2="148"
+                      stroke="#1a2d45" stroke-width="0.7" opacity="0.5"/>
+                <line x1="200" y1="114" x2="200" y2="148"
+                      stroke="#1a2d45" stroke-width="0.7" opacity="0.5"/>
+                <line x1="208" y1="114" x2="208" y2="148"
+                      stroke="#1a2d45" stroke-width="0.7" opacity="0.5"/>
 
                 <!-- LED -->
-                <circle class="camera-led" cx="170" cy="99" r="4" fill="#00FF88"/>
-                <circle cx="170" cy="99" r="4" fill="#00FF88" opacity="0.35" filter="url(#ledBloom)"/>
-
-                <!-- Scan beam (from lens, rotates with camera) -->
-                <path d="M95 112 L14 228 L58 248 Z" fill="rgba(0,255,136,0.035)"/>
-                <line x1="95" y1="112" x2="14" y2="228"  stroke="#00FF88" stroke-width="0.4" opacity="0.1"/>
-                <line x1="95" y1="112" x2="58" y2="248"  stroke="#00FF88" stroke-width="0.4" opacity="0.1"/>
-                <path d="M14 200 Q-10 240 20 258" stroke="#00FF88" stroke-width="0.5" fill="none" opacity="0.08" stroke-dasharray="3 5"/>
+                <circle class="camera-led" cx="175" cy="116" r="4" fill="#00FF88"/>
+                <circle cx="175" cy="116" r="6"
+                        fill="#00FF88" opacity="0.28" filter="url(#ledBloom)"/>
 
               </g>
               <!-- ══ END ROTATING GROUP ══ -->
 
-              <!-- HUD corners (fixed) -->
-              <path d="M10 20 L10 8  L22 8"  stroke="#00FF88" stroke-width="1" opacity="0.28"/>
-              <path d="M270 20 L270 8  L258 8" stroke="#00FF88" stroke-width="1" opacity="0.28"/>
-              <path d="M10 248 L10 260 L22 260" stroke="#00FF88" stroke-width="1" opacity="0.28"/>
+              <!-- Mount base — FIXED, rendered above the rotating group -->
+              <circle cx="140" cy="130" r="16"
+                      fill="#0d1828" stroke="#1e3a5a" stroke-width="1.5"/>
+              <circle cx="140" cy="130" r="10"
+                      fill="#08101c" stroke="rgba(0,255,136,0.2)" stroke-width="1"/>
+              <circle cx="140" cy="130" r="5"
+                      fill="#00FF88" opacity="0.75" filter="url(#ledBloom)"/>
+
+              <!-- HUD corners -->
+              <path d="M10 20  L10 8   L22 8"     stroke="#00FF88" stroke-width="1" opacity="0.28"/>
+              <path d="M270 20 L270 8  L258 8"    stroke="#00FF88" stroke-width="1" opacity="0.28"/>
+              <path d="M10 248 L10 260 L22 260"   stroke="#00FF88" stroke-width="1" opacity="0.28"/>
               <path d="M270 248 L270 260 L258 260" stroke="#00FF88" stroke-width="1" opacity="0.28"/>
 
               <!-- HUD labels -->
-              <text x="18"  y="256" font-family="DM Sans, monospace" font-size="7" fill="#00FF88" opacity="0.4" letter-spacing="0.1em">PTZ-01</text>
-              <text x="190" y="256" font-family="DM Sans, monospace" font-size="7" fill="#00FF88" opacity="0.4" letter-spacing="0.1em">● TRACK</text>
+              <text x="18"  y="256" font-family="DM Sans, monospace" font-size="7"
+                    fill="#00FF88" opacity="0.4" letter-spacing="0.1em">PTZ-01</text>
+              <text x="190" y="256" font-family="DM Sans, monospace" font-size="7"
+                    fill="#00FF88" opacity="0.4" letter-spacing="0.1em">● TRACK</text>
 
               <!-- Outer deco ring -->
-              <circle cx="140" cy="110" r="108" stroke="#00FF88" stroke-width="0.6" stroke-dasharray="2 10" opacity="0.09"/>
+              <circle cx="140" cy="130" r="106"
+                      stroke="#00FF88" stroke-width="0.6" stroke-dasharray="2 10" opacity="0.09"/>
             </svg>
           </div>
         </div>
@@ -574,6 +581,6 @@
   <!-- Scripts — GSAP from CDN, no ES modules, IIFE pattern -->
   <script defer src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
   <script defer src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
-  <script defer src="main.js?v=20260708"></script>
+  <script defer src="main.js?v=20260708b"></script>
 </body>
 </html>
