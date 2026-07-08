@@ -215,6 +215,104 @@
     })();
   }
 
+  /* ─── PIPE FRAME / SPRINKLER SYSTEM ────────────────────────────── */
+  function initPipeFrame() {
+    var frameSvg = document.getElementById("pipeFrameSvg");
+    var canvas   = document.getElementById("sprinklerCanvas");
+    if (!frameSvg || !canvas) return;
+
+    var ctx = canvas.getContext("2d");
+    var activeZones = { a: false, b: false };
+    var particles   = [];
+    var MAX_P       = 600;
+
+    /*
+      Sprinklers in zone a (x=144,288) and zone b (x=1152,1296).
+      SVG height is fixed at 140px with preserveAspectRatio=none,
+      so screen Y = svgRect.top + svgY directly.
+      Screen X scales by (svgX / 1440) * svgRect.width.
+    */
+    var sprinklerDefs = [
+      { svgX: 144,  zone: "a" },
+      { svgX: 288,  zone: "a" },
+      { svgX: 1152, zone: "b" },
+      { svgX: 1296, zone: "b" }
+    ];
+
+    function getSprinklerPos(svgX) {
+      var r = frameSvg.getBoundingClientRect();
+      return {
+        x: r.left + (svgX / 1440) * r.width,
+        y: r.top  + 116   /* svgY=106 head + ~10px for deflector plate */
+      };
+    }
+
+    /* Valve click toggles zone and updates wheel state */
+    $$(".pipe-valve").forEach(function (v) {
+      v.addEventListener("click", function () {
+        var z = v.dataset.zone;
+        if (!z) return;
+        activeZones[z] = !activeZones[z];
+        v.classList.toggle("is-open", activeZones[z]);
+      });
+    });
+
+    function spawnDrop(sx, sy) {
+      if (particles.length >= MAX_P) return;
+      var drift = (Math.random() - 0.5) * 2.4;
+      particles.push({
+        x:    sx + drift * 10,
+        y:    sy,
+        vx:   drift * 0.5,
+        vy:   0.4 + Math.random() * 1.4,
+        life: 1,
+        r:    0.8 + Math.random() * 1.8
+      });
+    }
+
+    function resize() {
+      canvas.width  = window.innerWidth;
+      canvas.height = window.innerHeight;
+    }
+    window.addEventListener("resize", resize, { passive: true });
+    resize();
+
+    (function loop() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+      /* Emit from open zones */
+      if (activeZones.a || activeZones.b) {
+        sprinklerDefs.forEach(function (s) {
+          if (!activeZones[s.zone]) return;
+          var p = getSprinklerPos(s.svgX);
+          for (var i = 0; i < 4; i++) spawnDrop(p.x, p.y);
+        });
+      }
+
+      /* Update + draw */
+      for (var i = particles.length - 1; i >= 0; i--) {
+        var p = particles[i];
+        p.vy  += 0.18;    /* gravity */
+        p.vx  *= 0.985;
+        p.x   += p.vx;
+        p.y   += p.vy;
+        p.life -= 0.009;
+
+        if (p.life <= 0 || p.y > canvas.height) {
+          particles.splice(i, 1);
+          continue;
+        }
+
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+        ctx.fillStyle = "rgba(140,210,255," + (p.life * 0.72).toFixed(2) + ")";
+        ctx.fill();
+      }
+
+      requestAnimationFrame(loop);
+    })();
+  }
+
   /* ─── CAMERA MOUSE FOLLOW ────────────────────────────────────── */
   function initCamera() {
     var svg  = $("#cameraRig");
@@ -573,6 +671,7 @@
     safe(initSmoothScroll,  "initSmoothScroll");
     safe(initCursor,        "initCursor");
     safe(initParticles,     "initParticles");
+    safe(initPipeFrame,     "initPipeFrame");
     safe(initCamera,        "initCamera");
     safe(initFireCanvas,    "initFireCanvas");
     safe(initCCTV,          "initCCTV");
