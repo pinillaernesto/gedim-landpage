@@ -6,13 +6,20 @@
   var $$ = function (sel, ctx) { return Array.from((ctx || document).querySelectorAll(sel)); };
   var fineHover = matchMedia("(hover: hover) and (pointer: fine)").matches;
 
+  /* Shared sprinkler API — initPipeFrame fills activate/deactivate */
+  var sprinklerAPI = {
+    activate:   null,
+    deactivate: null,
+    isActive:   function () { return false; }
+  };
+
   function safe(fn, name) {
     try { fn(); } catch (e) { console.warn("[" + name + "]", e); }
   }
 
   /* ─── NAV ─────────────────────────────────────────────────── */
   function initNav() {
-    var nav      = $("#nav");
+    var nav      = $("#siteHeader");
     var burger   = $(".nav-hamburger");
     var mobile   = $("#nav-mobile");
     var closeBtn = $(".nav-mobile-close");
@@ -21,7 +28,7 @@
     if (!nav) return;
 
     function handleScroll() {
-      nav.classList.toggle("nav--solid", window.scrollY > 80);
+      nav.classList.toggle("site-header--scrolled", window.scrollY > 10);
     }
     window.addEventListener("scroll", handleScroll, { passive: true });
     handleScroll();
@@ -60,7 +67,7 @@
       if (!target) return;
       e.preventDefault();
       window.scrollTo({
-        top: target.getBoundingClientRect().top + window.scrollY - 72,
+        top: target.getBoundingClientRect().top + window.scrollY - 185,
         behavior: "smooth"
       });
     });
@@ -221,53 +228,82 @@
     var canvas   = document.getElementById("sprinklerCanvas");
     if (!frameSvg || !canvas) return;
 
-    var ctx = canvas.getContext("2d");
-    var activeZones = { a: false, b: false };
-    var particles   = [];
-    var MAX_P       = 600;
+    var ctx        = canvas.getContext("2d");
+    var active     = false;
+    var particles  = [];
+    var MAX_P      = 2000;
+    var closeTimer = null;
 
-    /*
-      Sprinklers in zone a (x=144,288) and zone b (x=1152,1296).
-      SVG height is fixed at 140px with preserveAspectRatio=none,
-      so screen Y = svgRect.top + svgY directly.
-      Screen X scales by (svgX / 1440) * svgRect.width.
-    */
-    var sprinklerDefs = [
-      { svgX: 144,  zone: "a" },
-      { svgX: 288,  zone: "a" },
-      { svgX: 1152, zone: "b" },
-      { svgX: 1296, zone: "b" }
-    ];
+    /* All 7 sprinkler X positions in SVG space (viewBox 0 0 1440 140) */
+    var SPRINKLER_XS = [144, 288, 576, 720, 864, 1152, 1296];
 
     function getSprinklerPos(svgX) {
       var r = frameSvg.getBoundingClientRect();
+      /* sprinkler head at svgY ≈ 108 of 140 (deflector plate below drop pipe) */
       return {
         x: r.left + (svgX / 1440) * r.width,
-        y: r.top  + 116   /* svgY=106 head + ~10px for deflector plate */
+        y: r.top  + r.height * (108 / 140)
       };
     }
 
-    /* Valve click toggles zone and updates wheel state */
+    function activateSprinklers() {
+      active = true;
+      $$(".pipe-valve").forEach(function (v) { v.classList.add("is-open"); });
+      if (closeTimer) clearTimeout(closeTimer);
+      closeTimer = setTimeout(deactivateSprinklers, 10000);
+    }
+
+    function deactivateSprinklers() {
+      active = false;
+      $$(".pipe-valve").forEach(function (v) { v.classList.remove("is-open"); });
+      closeTimer = null;
+    }
+
+    /* Expose for fire banner */
+    sprinklerAPI.activate   = activateSprinklers;
+    sprinklerAPI.deactivate = deactivateSprinklers;
+    sprinklerAPI.isActive   = function () { return active; };
+
+    /* Any valve click toggles ALL sprinklers */
     $$(".pipe-valve").forEach(function (v) {
       v.addEventListener("click", function () {
-        var z = v.dataset.zone;
-        if (!z) return;
-        activeZones[z] = !activeZones[z];
-        v.classList.toggle("is-open", activeZones[z]);
+        if (active) {
+          if (closeTimer) clearTimeout(closeTimer);
+          deactivateSprinklers();
+        } else {
+          activateSprinklers();
+        }
       });
     });
 
-    function spawnDrop(sx, sy) {
-      if (particles.length >= MAX_P) return;
-      var drift = (Math.random() - 0.5) * 2.4;
-      particles.push({
-        x:    sx + drift * 10,
-        y:    sy,
-        vx:   drift * 0.5,
-        vy:   0.4 + Math.random() * 1.4,
-        life: 1,
-        r:    0.8 + Math.random() * 1.8
-      });
+    /*
+      Radial umbrella spray (NFPA-style):
+      Water hits the deflector plate and fans outward ±72° from vertical,
+      with most mass between 30° and 70°. Gravity then curves streams into
+      parabolic arcs — producing the characteristic parasol/crown pattern.
+    */
+    function spawnSprinklerParticles(sx, sy) {
+      var STREAMS = 3;
+      for (var i = 0; i < STREAMS; i++) {
+        if (particles.length >= MAX_P) return;
+
+        /* Fan angle from vertical: bias toward outer ring (denser laterally) */
+        var u   = Math.random();
+        var deg = (u < 0.5 ? -1 : 1) * (20 + Math.random() * 55); /* 20–75° each side */
+        var rad = deg * Math.PI / 180;
+        var spd = 3.5 + Math.random() * 4.5;  /* px/frame initial speed */
+
+        particles.push({
+          x:   sx + (Math.random() - 0.5) * 4,
+          y:   sy,
+          vx:  Math.sin(rad) * spd,            /* lateral: fast */
+          vy:  Math.cos(rad) * spd * 0.35,     /* downward: gentle start */
+          life: 1,
+          dec:  0.010 + Math.random() * 0.007,
+          r:    0.5 + Math.random() * 1.5,
+          isCore: Math.random() < 0.4          /* core vs spray droplet */
+        });
+      }
     }
 
     function resize() {
@@ -280,36 +316,155 @@
     (function loop() {
       ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-      /* Emit from open zones */
-      if (activeZones.a || activeZones.b) {
-        sprinklerDefs.forEach(function (s) {
-          if (!activeZones[s.zone]) return;
-          var p = getSprinklerPos(s.svgX);
-          for (var i = 0; i < 4; i++) spawnDrop(p.x, p.y);
+      if (active) {
+        SPRINKLER_XS.forEach(function (svgX) {
+          var pos = getSprinklerPos(svgX);
+          spawnSprinklerParticles(pos.x, pos.y);
         });
       }
 
-      /* Update + draw */
       for (var i = particles.length - 1; i >= 0; i--) {
         var p = particles[i];
-        p.vy  += 0.18;    /* gravity */
-        p.vx  *= 0.985;
+
+        p.vy  += 0.21;   /* gravity — pulls arcing streams down */
+        p.vx  *= 0.989;  /* horizontal air resistance */
         p.x   += p.vx;
         p.y   += p.vy;
-        p.life -= 0.009;
+        p.life -= p.dec;
 
-        if (p.life <= 0 || p.y > canvas.height) {
+        if (p.life <= 0 || p.y > canvas.height || p.x < -60 || p.x > canvas.width + 60) {
           particles.splice(i, 1);
           continue;
         }
 
+        var alpha = (p.life * 0.82).toFixed(2);
+        var speed = Math.sqrt(p.vx * p.vx + p.vy * p.vy);
+
+        /* Draw as motion streak (line in direction of travel) */
+        var len = Math.min(speed * 2.2, 10);
+        var nx  = p.vx / (speed || 1);
+        var ny  = p.vy / (speed || 1);
+
         ctx.beginPath();
-        ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
-        ctx.fillStyle = "rgba(140,210,255," + (p.life * 0.72).toFixed(2) + ")";
-        ctx.fill();
+        ctx.moveTo(p.x, p.y);
+        ctx.lineTo(p.x - nx * len, p.y - ny * len);
+        ctx.strokeStyle = p.isCore
+          ? "rgba(220,240,255," + alpha + ")"
+          : "rgba(150,210,255," + alpha + ")";
+        ctx.lineWidth   = p.r;
+        ctx.lineCap     = "round";
+        ctx.stroke();
       }
 
       requestAnimationFrame(loop);
+    })();
+  }
+
+  /* ─── FIRE ALARM BANNER ─────────────────────────────────────── */
+  function initFireBanner() {
+    var banner      = document.getElementById("fireBanner");
+    var canvas      = document.getElementById("fireBannerCanvas");
+    var countdown   = document.getElementById("fireBannerCountdown");
+    if (!banner || !canvas) return;
+
+    var ctx         = canvas.getContext("2d");
+    var flameP      = [];
+    var burning     = false;
+    var countTmr    = null;
+
+    function resize() {
+      canvas.width  = banner.offsetWidth  || window.innerWidth;
+      canvas.height = banner.offsetHeight || 84;
+    }
+    window.addEventListener("resize", function () { resize(); }, { passive: true });
+    resize();
+
+    function spawnFlame() {
+      var W = canvas.width, H = canvas.height;
+      flameP.push({
+        x:    Math.random() * W,
+        y:    H,
+        vx:   (Math.random() - 0.5) * 2.2,
+        vy:   -(1.4 + Math.random() * 2.8),
+        life: 1,
+        dec:  0.022 + Math.random() * 0.014,
+        r:    7 + Math.random() * 11
+      });
+    }
+
+    (function drawFlames() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+      if (burning && flameP.length < 50) {
+        for (var s = 0; s < 4; s++) spawnFlame();
+      }
+
+      for (var i = flameP.length - 1; i >= 0; i--) {
+        var f = flameP[i];
+        f.x  += f.vx + (Math.random() - 0.5) * 0.9;
+        f.y  += f.vy;
+        f.vy *= 0.981;
+        f.vx *= 0.958;
+        f.r  *= 0.990;
+        f.life -= f.dec;
+
+        if (f.life <= 0) { flameP.splice(i, 1); continue; }
+
+        var g = ctx.createRadialGradient(f.x, f.y, 0, f.x, f.y, f.r * 2.4);
+        if (f.life > 0.55) {
+          g.addColorStop(0,   "rgba(255,225,70,"  + (f.life * 0.92).toFixed(2) + ")");
+          g.addColorStop(0.35,"rgba(255,90,10,"   + (f.life * 0.72).toFixed(2) + ")");
+          g.addColorStop(1,   "rgba(180,0,0,0)");
+        } else {
+          g.addColorStop(0,   "rgba(255,100,20,"  + (f.life * 0.82).toFixed(2) + ")");
+          g.addColorStop(0.5, "rgba(140,0,0,"     + (f.life * 0.50).toFixed(2) + ")");
+          g.addColorStop(1,   "rgba(80,0,0,0)");
+        }
+        ctx.beginPath();
+        ctx.arc(f.x, f.y, f.r * 2.4, 0, Math.PI * 2);
+        ctx.fillStyle = g;
+        ctx.fill();
+      }
+
+      requestAnimationFrame(drawFlames);
+    })();
+
+    function startFire() {
+      burning = true;
+      banner.classList.add("is-active");
+      banner.setAttribute("aria-hidden", "false");
+
+      if (sprinklerAPI.activate) sprinklerAPI.activate();
+
+      var secs = 10;
+      if (countdown) countdown.textContent = secs + "s";
+      if (countTmr) clearInterval(countTmr);
+      countTmr = setInterval(function () {
+        secs--;
+        if (countdown) countdown.textContent = secs + "s";
+        if (secs <= 0) {
+          clearInterval(countTmr);
+          endFire();
+        }
+      }, 1000);
+    }
+
+    function endFire() {
+      burning = false;
+      banner.classList.remove("is-active");
+      banner.setAttribute("aria-hidden", "true");
+      /* Sprinklers keep running 2s after fire-out, then auto-close */
+      setTimeout(function () {
+        if (sprinklerAPI.deactivate) sprinklerAPI.deactivate();
+      }, 2000);
+    }
+
+    /* Cycle: first fire at 40 s, then every 40 s */
+    (function scheduleFire() {
+      setTimeout(function () {
+        startFire();
+        scheduleFire(); /* next cycle */
+      }, 40000);
     })();
   }
 
@@ -672,6 +827,7 @@
     safe(initCursor,        "initCursor");
     safe(initParticles,     "initParticles");
     safe(initPipeFrame,     "initPipeFrame");
+    safe(initFireBanner,    "initFireBanner");
     safe(initCamera,        "initCamera");
     safe(initFireCanvas,    "initFireCanvas");
     safe(initCCTV,          "initCCTV");

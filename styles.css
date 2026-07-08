@@ -18,7 +18,7 @@
   --ease-soft:   cubic-bezier(0.25, 0.46, 0.45, 0.94);
   --ease-bounce: cubic-bezier(0.34, 1.56, 0.64, 1);
 
-  --nav-h:    68px;
+  --nav-h:    180px;
   --radius:   6px;
   --container: min(1180px, 100%);
   --gutter:   clamp(1.25rem, 5vw, 2.5rem);
@@ -183,73 +183,97 @@ ul { list-style: none; }
 }
 
 /* =============================================================
-   7. NAV
+   7. SITE HEADER (fixed: pipe ceiling network + brand bar)
    ============================================================= */
-.nav {
+.site-header {
   position: fixed;
   top: 0; left: 0; right: 0;
   z-index: 100;
-  height: var(--nav-h);
-  transition: background .3s var(--ease-soft), backdrop-filter .3s;
+  transition: box-shadow .3s var(--ease-soft);
 }
-.nav--solid {
-  background: rgba(7, 11, 16, 0.92);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  border-bottom: 1px solid var(--border);
+.site-header--scrolled {
+  box-shadow: 0 2px 28px rgba(0,0,0,.7);
 }
 
-.nav-inner {
+/* ── Pipe ceiling network (top row) ── */
+.header-pipes {
+  width: 100%;
+  height: 108px;
+  overflow: hidden;
+  display: block;
+  background: #070d14;
+}
+.header-pipes-svg {
+  display: block;
+  width: 100%;
+  height: 108px;
+}
+
+/* ── Brand bar (bottom row) ── */
+.header-bar {
+  height: 72px;
+  background: rgba(5,9,14,.97);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border-bottom: 1px solid var(--border);
+}
+.header-inner {
   display: flex;
   align-items: center;
   height: 100%;
   padding-inline: var(--gutter);
   max-width: var(--container);
   margin-inline: auto;
-  gap: 2rem;
+  gap: 1rem;
 }
 
-.nav-logo {
-  display: flex;
-  flex-direction: column;
-  line-height: 1;
-  gap: 4px;
+/* ── Spline robot (left) ── */
+.header-robot {
+  width: 148px;
+  height: 72px;
+  overflow: hidden;
   flex-shrink: 0;
+  position: relative;
+  margin-left: calc(-1 * var(--gutter));
+  background: transparent;
+}
+.header-robot spline-viewer {
+  position: absolute;
+  width: 270px;
+  height: 320px;
+  bottom: -60px;
+  left: -28px;
+  --spline-viewer-bg: transparent;
+}
+
+/* ── GEDIM logo ── */
+.header-logo {
+  display: flex;
+  align-items: center;
+  gap: 6px;
   text-decoration: none;
-}
-.nav-logo-inner {
-  display: flex;
-  align-items: flex-end;
-  gap: 5px;
-}
-/* SVG mark: robotic hand gripping the G */
-.nav-logo-mark {
-  height: 34px;
-  width: auto;
   flex-shrink: 0;
-  display: block;
 }
-.nav-logo-wordmark {
-  font-size: 1.375rem;
+.header-logo-mark {
+  height: 44px;
+  width: auto;
+  display: block;
+  flex-shrink: 0;
+}
+.header-logo-wordmark {
+  font-size: 1.5rem;
   font-weight: 700;
   color: #fff;
-  letter-spacing: -.01em;
-  padding-bottom: 2px;
-}
-.nav-logo-rule {
-  display: block;
-  height: 2px;
-  width: 100%;
-  background: var(--accent);
-  border-radius: 1px;
+  letter-spacing: -.015em;
 }
 
-.nav-links {
+/* ── Desktop nav links ── */
+.header-nav {
   display: none;
   gap: 2rem;
-  margin-inline: auto;
+  margin-left: auto;
 }
-.nav-link {
+.header-nav-link {
   font-size: .9375rem;
   font-weight: 400;
   color: var(--text-muted);
@@ -257,7 +281,7 @@ ul { list-style: none; }
   position: relative;
   padding-bottom: 2px;
 }
-.nav-link::after {
+.header-nav-link::after {
   content: '';
   position: absolute;
   bottom: -2px; left: 0;
@@ -265,11 +289,12 @@ ul { list-style: none; }
   background: var(--accent);
   transition: width .25s var(--ease-out);
 }
-.nav-link:hover { color: var(--text-primary); }
-.nav-link:hover::after { width: 100%; }
+.header-nav-link:hover { color: var(--text-primary); }
+.header-nav-link:hover::after { width: 100%; }
 
-.nav-cta { display: none; margin-left: auto; }
+.header-cta { display: none; margin-left: 1rem; }
 
+/* ── Hamburger (mobile) ── */
 .nav-hamburger {
   display: flex;
   flex-direction: column;
@@ -434,20 +459,7 @@ ul { list-style: none; }
   font-weight: 300;
 }
 
-/* ── PIPE FRAME (fire suppression ceiling network) ── */
-.pipe-frame {
-  position: absolute;
-  top: 0; left: 0;
-  width: 100%;
-  height: 140px;
-  z-index: 2;
-  pointer-events: none;   /* valves re-enable via their own rule */
-}
-.pipe-frame-svg {
-  display: block;
-  width: 100%;
-  height: 140px;
-}
+/* ── Pipe valves (in header-pipes) ── */
 /* Gate valves are clickable; everything else in the frame is decorative */
 .pipe-valve {
   pointer-events: all;
@@ -484,6 +496,79 @@ ul { list-style: none; }
   height: 100%;
   pointer-events: none;
   z-index: 10;
+}
+
+/* ── Fire alarm banner (bottom) ── */
+.fire-banner {
+  position: fixed;
+  bottom: 0; left: 0; right: 0;
+  height: 84px;
+  z-index: 90;
+  overflow: hidden;
+  opacity: 0;
+  transform: translateY(100%);
+  transition: opacity .5s var(--ease-out), transform .5s var(--ease-out);
+  background: #06020a;
+  border-top: 2px solid #c42020;
+}
+.fire-banner.is-active {
+  opacity: 1;
+  transform: translateY(0);
+}
+.fire-banner-canvas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+.fire-banner-ui {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  gap: .875rem;
+  padding-inline: var(--gutter);
+  pointer-events: none;
+}
+.fire-banner-icon {
+  color: #ff6020;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  animation: fireIconPulse .55s ease-in-out infinite alternate;
+}
+@keyframes fireIconPulse {
+  from { opacity: .65; transform: scale(.9); }
+  to   { opacity: 1;   transform: scale(1.1); }
+}
+.fire-banner-texts { display: flex; flex-direction: column; gap: .1rem; }
+.fire-banner-title {
+  font-size: .8125rem;
+  font-weight: 700;
+  color: #ff7030;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  animation: textFlicker .75s ease-in-out infinite alternate;
+}
+@keyframes textFlicker {
+  0%   { opacity: 1; }
+  100% { opacity: .6; }
+}
+.fire-banner-sub {
+  font-size: .7rem;
+  color: rgba(255,180,120,.65);
+  letter-spacing: .04em;
+}
+.fire-banner-countdown {
+  margin-left: auto;
+  font-size: 1.75rem;
+  font-weight: 700;
+  color: #ff3010;
+  font-variant-numeric: tabular-nums;
+  line-height: 1;
+  min-width: 3ch;
+  text-align: right;
+  text-shadow: 0 0 12px rgba(255,50,10,.6);
 }
 
 /* Camera SVG */
@@ -1014,9 +1099,9 @@ ul { list-style: none; }
    17. RESPONSIVE — tablet (≥768px)
    ============================================================= */
 @media (min-width: 768px) {
-  /* Nav */
-  .nav-links    { display: flex; }
-  .nav-cta      { display: inline-flex; }
+  /* Header nav (desktop) */
+  .header-nav   { display: flex; }
+  .header-cta   { display: inline-flex; }
   .nav-hamburger { display: none; }
 
   /* Hero: 2 columns */

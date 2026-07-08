@@ -12,83 +12,137 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,700;1,9..40,400&display=swap" rel="stylesheet">
 
-  <link rel="stylesheet" href="styles.css?v=20260708e">
+  <link rel="stylesheet" href="styles.css?v=20260708f">
+  <!-- Spline 3D viewer web component (registers <spline-viewer>) -->
+  <script type="module" src="https://unpkg.com/@splinetool/viewer@1.9.82/build/spline-viewer.js"></script>
 </head>
 <body>
   <a href="#main" class="skip-link">Saltar al contenido</a>
   <div class="cursor" aria-hidden="true"></div>
 
-  <!-- ═══ NAV ═══ -->
-  <header class="nav" id="nav">
-    <div class="nav-inner">
-      <a href="#hero" class="nav-logo" aria-label="GEDIM — inicio">
-        <span class="nav-logo-inner">
-          <!--
-            GEDIM logomark: robotic hand gripping the letter G.
-            Fingers (3) drawn first (behind), G arc drawn on top so the
-            stroke crosses the finger tips — creating the grip illusion.
-            G: center(16,13) r=11, opening ±20° at right.
-            Bottom of G circle = y 24. Center finger top = y 20 → inside G → grip visible.
-          -->
-          <svg class="nav-logo-mark" viewBox="0 0 32 36" fill="none"
-               xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+  <!-- ═══ SITE HEADER (fixed: pipe ceiling + brand bar) ═══ -->
+  <header class="site-header" id="siteHeader">
+
+    <!-- ── Pipe ceiling network ── -->
+    <div class="header-pipes" aria-hidden="true">
+      <svg id="pipeFrameSvg" class="header-pipes-svg"
+           viewBox="0 0 1440 140" preserveAspectRatio="none"
+           width="100%" height="108" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <rect x="0" y="0" width="1440" height="8" fill="#08131e"/>
+        <rect x="228"  y="0" width="24" height="8"  rx="2" fill="#0e1e2e"/><rect x="236"  y="8" width="8"  height="30" fill="#1a2e42"/>
+        <rect x="708"  y="0" width="24" height="8"  rx="2" fill="#0e1e2e"/><rect x="716"  y="8" width="8"  height="30" fill="#1a2e42"/>
+        <rect x="1188" y="0" width="24" height="8"  rx="2" fill="#0e1e2e"/><rect x="1196" y="8" width="8"  height="30" fill="#1a2e42"/>
+        <rect x="0" y="38" width="1440" height="28" fill="#7a1212"/>
+        <rect x="0" y="38" width="1440" height="7"  fill="#c42020"/>
+        <rect x="0" y="38" width="1440" height="3"  fill="#e03030" opacity="0.4"/>
+        <rect x="0" y="59" width="1440" height="7"  fill="#4a0a0a"/>
+        <rect x="126"  y="29" width="36" height="44" rx="7" fill="#620e0e"/><rect x="126"  y="29" width="36" height="10" rx="5" fill="#c42020"/>
+        <rect x="270"  y="29" width="36" height="44" rx="7" fill="#620e0e"/><rect x="270"  y="29" width="36" height="10" rx="5" fill="#c42020"/>
+        <rect x="558"  y="29" width="36" height="44" rx="7" fill="#620e0e"/><rect x="558"  y="29" width="36" height="10" rx="5" fill="#c42020"/>
+        <rect x="702"  y="29" width="36" height="44" rx="7" fill="#620e0e"/><rect x="702"  y="29" width="36" height="10" rx="5" fill="#c42020"/>
+        <rect x="846"  y="29" width="36" height="44" rx="7" fill="#620e0e"/><rect x="846"  y="29" width="36" height="10" rx="5" fill="#c42020"/>
+        <rect x="1134" y="29" width="36" height="44" rx="7" fill="#620e0e"/><rect x="1134" y="29" width="36" height="10" rx="5" fill="#c42020"/>
+        <rect x="1278" y="29" width="36" height="44" rx="7" fill="#620e0e"/><rect x="1278" y="29" width="36" height="10" rx="5" fill="#c42020"/>
+        <rect x="135"  y="66" width="18" height="42" fill="#6e1010"/><rect x="135"  y="66" width="5" height="42" fill="#b01818"/>
+        <rect x="279"  y="66" width="18" height="42" fill="#6e1010"/><rect x="279"  y="66" width="5" height="42" fill="#b01818"/>
+        <rect x="567"  y="66" width="18" height="42" fill="#6e1010"/><rect x="567"  y="66" width="5" height="42" fill="#b01818"/>
+        <rect x="711"  y="66" width="18" height="42" fill="#6e1010"/><rect x="711"  y="66" width="5" height="42" fill="#b01818"/>
+        <rect x="855"  y="66" width="18" height="42" fill="#6e1010"/><rect x="855"  y="66" width="5" height="42" fill="#b01818"/>
+        <rect x="1143" y="66" width="18" height="42" fill="#6e1010"/><rect x="1143" y="66" width="5" height="42" fill="#b01818"/>
+        <rect x="1287" y="66" width="18" height="42" fill="#6e1010"/><rect x="1287" y="66" width="5" height="42" fill="#b01818"/>
+        <g class="pipe-valve" id="valve-a" data-zone="a">
+          <title>Activar todos los sprinklers</title>
+          <rect class="valve-body" x="396" y="40" width="72" height="24" rx="5" fill="#3a0808"/>
+          <rect x="396" y="40" width="72" height="6" rx="3" fill="#6a1414"/>
+          <g class="valve-wheel">
+            <circle cx="432" cy="52" r="18" fill="none" stroke="#c42020" stroke-width="3"/>
+            <line x1="432" y1="34" x2="432" y2="70" stroke="#c42020" stroke-width="2.5"/>
+            <line x1="414" y1="52" x2="450" y2="52" stroke="#c42020" stroke-width="2.5"/>
+            <line x1="420" y1="39" x2="444" y2="65" stroke="#c42020" stroke-width="1.5" opacity="0.5"/>
+            <line x1="420" y1="65" x2="444" y2="39" stroke="#c42020" stroke-width="1.5" opacity="0.5"/>
+          </g>
+          <circle class="valve-ind" cx="432" cy="52" r="5.5" fill="#c42020"/>
+        </g>
+        <circle cx="720" cy="44" r="17" fill="#0d1b2e" stroke="#1e3050" stroke-width="2"/>
+        <circle cx="720" cy="44" r="12" fill="#091320"/>
+        <path d="M713 44 L720 36 L727 44" stroke="#c42020" stroke-width="1.8" fill="none"/>
+        <circle cx="720" cy="44" r="3.5" fill="#c42020"/>
+        <line x1="720" y1="28" x2="720" y2="33" stroke="#2a3f55" stroke-width="1.5"/>
+        <line x1="704" y1="44" x2="709" y2="44" stroke="#2a3f55" stroke-width="1.5"/>
+        <line x1="731" y1="44" x2="736" y2="44" stroke="#2a3f55" stroke-width="1.5"/>
+        <g class="pipe-valve" id="valve-b" data-zone="b">
+          <title>Activar todos los sprinklers</title>
+          <rect class="valve-body" x="972" y="40" width="72" height="24" rx="5" fill="#3a0808"/>
+          <rect x="972" y="40" width="72" height="6" rx="3" fill="#6a1414"/>
+          <g class="valve-wheel">
+            <circle cx="1008" cy="52" r="18" fill="none" stroke="#c42020" stroke-width="3"/>
+            <line x1="1008" y1="34" x2="1008" y2="70" stroke="#c42020" stroke-width="2.5"/>
+            <line x1="990"  y1="52" x2="1026" y2="52" stroke="#c42020" stroke-width="2.5"/>
+            <line x1="996"  y1="39" x2="1020" y2="65" stroke="#c42020" stroke-width="1.5" opacity="0.5"/>
+            <line x1="996"  y1="65" x2="1020" y2="39" stroke="#c42020" stroke-width="1.5" opacity="0.5"/>
+          </g>
+          <circle class="valve-ind" cx="1008" cy="52" r="5.5" fill="#c42020"/>
+        </g>
+        <rect x="48"   y="26" width="50" height="20" rx="3" fill="#c42020"/>
+        <text x="73"   y="39" font-family="DM Sans,Arial,sans-serif" font-size="10" fill="white" text-anchor="middle" font-weight="700" letter-spacing="0.05em">NFPA</text>
+        <rect x="1190" y="26" width="50" height="20" rx="3" fill="#c42020"/>
+        <text x="1215" y="39" font-family="DM Sans,Arial,sans-serif" font-size="10" fill="white" text-anchor="middle" font-weight="700" letter-spacing="0.05em">NFPA</text>
+        <!-- 7 sprinkler heads -->
+        <g data-svgx="144"><rect x="135" y="106" width="18" height="7" fill="#7a1212"/><circle cx="144" cy="106" r="9" fill="#c42020"/><line x1="125" y1="106" x2="163" y2="106" stroke="#881515" stroke-width="3.5"/><line x1="129" y1="113" x2="159" y2="113" stroke="#cc2222" stroke-width="1.5"/></g>
+        <g data-svgx="288"><rect x="279" y="106" width="18" height="7" fill="#7a1212"/><circle cx="288" cy="106" r="9" fill="#c42020"/><line x1="269" y1="106" x2="307" y2="106" stroke="#881515" stroke-width="3.5"/><line x1="273" y1="113" x2="303" y2="113" stroke="#cc2222" stroke-width="1.5"/></g>
+        <g data-svgx="576"><rect x="567" y="106" width="18" height="7" fill="#7a1212"/><circle cx="576" cy="106" r="9" fill="#c42020"/><line x1="557" y1="106" x2="595" y2="106" stroke="#881515" stroke-width="3.5"/><line x1="561" y1="113" x2="591" y2="113" stroke="#cc2222" stroke-width="1.5"/></g>
+        <g data-svgx="720"><rect x="711" y="106" width="18" height="7" fill="#7a1212"/><circle cx="720" cy="106" r="9" fill="#c42020"/><line x1="701" y1="106" x2="739" y2="106" stroke="#881515" stroke-width="3.5"/><line x1="705" y1="113" x2="735" y2="113" stroke="#cc2222" stroke-width="1.5"/></g>
+        <g data-svgx="864"><rect x="855" y="106" width="18" height="7" fill="#7a1212"/><circle cx="864" cy="106" r="9" fill="#c42020"/><line x1="845" y1="106" x2="883" y2="106" stroke="#881515" stroke-width="3.5"/><line x1="849" y1="113" x2="879" y2="113" stroke="#cc2222" stroke-width="1.5"/></g>
+        <g data-svgx="1152"><rect x="1143" y="106" width="18" height="7" fill="#7a1212"/><circle cx="1152" cy="106" r="9" fill="#c42020"/><line x1="1133" y1="106" x2="1171" y2="106" stroke="#881515" stroke-width="3.5"/><line x1="1137" y1="113" x2="1167" y2="113" stroke="#cc2222" stroke-width="1.5"/></g>
+        <g data-svgx="1296"><rect x="1287" y="106" width="18" height="7" fill="#7a1212"/><circle cx="1296" cy="106" r="9" fill="#c42020"/><line x1="1277" y1="106" x2="1315" y2="106" stroke="#881515" stroke-width="3.5"/><line x1="1281" y1="113" x2="1311" y2="113" stroke="#cc2222" stroke-width="1.5"/></g>
+      </svg>
+    </div>
+
+    <!-- ── Brand bar ── -->
+    <div class="header-bar">
+      <div class="header-inner">
+        <!-- Spline 3D robot (left) -->
+        <div class="header-robot" aria-hidden="true">
+          <spline-viewer url="https://prod.spline.design/kZDDjO5HuC9GJUM2/scene.splinecode" loading="lazy"></spline-viewer>
+        </div>
+        <!-- GEDIM logo -->
+        <a href="#hero" class="header-logo" aria-label="GEDIM — inicio">
+          <svg class="header-logo-mark" viewBox="0 0 32 36" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
             <defs>
               <linearGradient id="logo-g" x1="2" y1="2" x2="28" y2="28" gradientUnits="userSpaceOnUse">
-                <stop offset="0%"   stop-color="#dde9f8"/>
-                <stop offset="35%"  stop-color="#8aafc8"/>
-                <stop offset="72%"  stop-color="#4a6e8a"/>
-                <stop offset="100%" stop-color="#274058"/>
+                <stop offset="0%" stop-color="#dde9f8"/><stop offset="35%" stop-color="#8aafc8"/><stop offset="72%" stop-color="#4a6e8a"/><stop offset="100%" stop-color="#274058"/>
               </linearGradient>
               <linearGradient id="logo-h" x1="16" y1="20" x2="16" y2="36" gradientUnits="userSpaceOnUse">
-                <stop offset="0%"   stop-color="#1e3254"/>
-                <stop offset="100%" stop-color="#050d18"/>
+                <stop offset="0%" stop-color="#1e3254"/><stop offset="100%" stop-color="#050d18"/>
               </linearGradient>
             </defs>
-
-            <!-- ── Robotic fingers (behind G so arc crosses over them) ── -->
-            <!-- Left finger -->
-            <rect x="7"    y="21"   width="5" height="13" rx="2.5"
-                  fill="url(#logo-h)" stroke="#1a3458" stroke-width="0.8"/>
+            <rect x="7"    y="21"   width="5" height="13" rx="2.5" fill="url(#logo-h)" stroke="#1a3458" stroke-width="0.8"/>
             <rect x="8"    y="23.5" width="3" height="1"  rx="0.5" fill="#091828" opacity="0.85"/>
             <rect x="8"    y="26.5" width="3" height="1"  rx="0.5" fill="#091828" opacity="0.85"/>
-            <!-- Center finger (tallest — tip reaches inside G arc) -->
-            <rect x="13.5" y="20"   width="5" height="14" rx="2.5"
-                  fill="url(#logo-h)" stroke="#1a3458" stroke-width="0.8"/>
+            <rect x="13.5" y="20"   width="5" height="14" rx="2.5" fill="url(#logo-h)" stroke="#1a3458" stroke-width="0.8"/>
             <rect x="14.5" y="22"   width="3" height="1"  rx="0.5" fill="#091828" opacity="0.85"/>
             <rect x="14.5" y="25"   width="3" height="1"  rx="0.5" fill="#091828" opacity="0.85"/>
-            <!-- Right finger -->
-            <rect x="20"   y="21"   width="5" height="13" rx="2.5"
-                  fill="url(#logo-h)" stroke="#1a3458" stroke-width="0.8"/>
+            <rect x="20"   y="21"   width="5" height="13" rx="2.5" fill="url(#logo-h)" stroke="#1a3458" stroke-width="0.8"/>
             <rect x="21"   y="23.5" width="3" height="1"  rx="0.5" fill="#091828" opacity="0.85"/>
             <rect x="21"   y="26.5" width="3" height="1"  rx="0.5" fill="#091828" opacity="0.85"/>
-            <!-- Palm bar -->
-            <rect x="5.5" y="32.5" width="21" height="3.5" rx="1.8"
-                  fill="url(#logo-h)" stroke="#1a3458" stroke-width="0.6"/>
-            <!-- Green power LED -->
+            <rect x="5.5"  y="32.5" width="21" height="3.5" rx="1.8" fill="url(#logo-h)" stroke="#1a3458" stroke-width="0.6"/>
             <circle cx="16" cy="34.2" r="1.5" fill="#00FF88"/>
             <circle cx="16" cy="34.2" r="2.8" fill="#00FF88" opacity="0.14"/>
-
-            <!-- ── G letterform — drawn AFTER fingers (arc sits on top) ── -->
-            <!-- Arc: M top-of-opening, counterclockwise large arc, to bottom-of-opening -->
-            <path d="M 26.34 9.24 A 11 11 0 1 0 26.34 16.76"
-                  stroke="url(#logo-g)" stroke-width="4.5"
-                  stroke-linecap="round" fill="none"/>
-            <!-- Crossbar (horizontal shelf pointing inward from right wall) -->
-            <line x1="19" y1="13" x2="26.34" y2="13"
-                  stroke="url(#logo-g)" stroke-width="4.5" stroke-linecap="round"/>
+            <path d="M 26.34 9.24 A 11 11 0 1 0 26.34 16.76" stroke="url(#logo-g)" stroke-width="4.5" stroke-linecap="round" fill="none"/>
+            <line x1="19" y1="13" x2="26.34" y2="13" stroke="url(#logo-g)" stroke-width="4.5" stroke-linecap="round"/>
           </svg>
-          <span class="nav-logo-wordmark">EDIM</span>
-        </span>
-        <span class="nav-logo-rule" aria-hidden="true"></span>
-      </a>
-      <nav class="nav-links" aria-label="Navegación principal">
-        <a href="#servicios" class="nav-link">Servicios</a>
-        <a href="#contacto" class="nav-link">Contáctanos</a>
-      </nav>
-      <a href="#contacto" class="btn btn-outline nav-cta">Cotizar ahora</a>
-      <button class="nav-hamburger" aria-label="Abrir menú" aria-expanded="false" aria-controls="nav-mobile">
-        <span></span><span></span><span></span>
-      </button>
+          <span class="header-logo-wordmark">EDIM</span>
+        </a>
+        <!-- Nav links (desktop) -->
+        <nav class="header-nav" aria-label="Navegación principal">
+          <a href="#servicios" class="header-nav-link">Servicios</a>
+          <a href="#contacto" class="header-nav-link">Contáctanos</a>
+        </nav>
+        <a href="#contacto" class="btn btn-outline header-cta">Cotizar ahora</a>
+        <button class="nav-hamburger" aria-label="Abrir menú" aria-expanded="false" aria-controls="nav-mobile">
+          <span></span><span></span><span></span>
+        </button>
+      </div>
     </div>
   </header>
 
@@ -110,12 +164,8 @@
     <section class="hero" id="hero" aria-label="Portada">
       <canvas class="hero-canvas" id="heroCanvas" aria-hidden="true"></canvas>
 
-      <!-- ═══ PIPE FRAME — red suppression network spanning the ceiling ═══
-           Valve A (x≈30%) → zone A sprinklers (left two)
-           Valve B (x≈70%) → zone B sprinklers (right two)
-           Click either valve to open/close that zone.
-           Water particles run on #sprinklerCanvas (fixed, outside hero)  -->
-      <div class="pipe-frame" id="pipeFrame" aria-hidden="true">
+      <!-- Pipe frame moved to fixed site-header -->
+      <div class="pipe-frame" id="pipeFrame" aria-hidden="true" style="display:none">
         <svg id="pipeFrameSvg" class="pipe-frame-svg"
              viewBox="0 0 1440 140" preserveAspectRatio="none"
              width="100%" height="140" fill="none"
@@ -782,8 +832,25 @@
   <!-- Scripts — GSAP from CDN, no ES modules, IIFE pattern -->
   <script defer src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
   <script defer src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
-  <script defer src="main.js?v=20260708e"></script>
-  <!-- Water particle canvas — fixed, above hero content, below nav (z-index 10 vs nav 100) -->
+  <script defer src="main.js?v=20260708f"></script>
+  <!-- Water particle canvas — fixed, above hero content, below nav -->
   <canvas id="sprinklerCanvas" class="sprinkler-canvas" aria-hidden="true"></canvas>
+  <!-- Fire alarm banner (bottom) — hidden until fire cycle triggers -->
+  <div class="fire-banner" id="fireBanner" aria-hidden="true" aria-live="assertive" aria-atomic="true">
+    <canvas id="fireBannerCanvas" class="fire-banner-canvas"></canvas>
+    <div class="fire-banner-ui">
+      <div class="fire-banner-icon" aria-hidden="true">
+        <svg width="28" height="28" viewBox="0 0 24 24" fill="none">
+          <path d="M12 2C12 2 8 7 8 11a4 4 0 0 0 8 0c0-2-1.5-4-1.5-4S16 9 16 12a4 4 0 0 1-8 0C8 9 12 2 12 2z" fill="#ff6020"/>
+          <path d="M12 8c0 0-2 3-2 5a2 2 0 0 0 4 0c0-1.5-2-5-2-5z" fill="#ffcc00"/>
+        </svg>
+      </div>
+      <div class="fire-banner-texts">
+        <span class="fire-banner-title">Alarma de incendio activa</span>
+        <span class="fire-banner-sub">Sistema de supresión automática activado · todos los sprinklers</span>
+      </div>
+      <div class="fire-banner-countdown" id="fireBannerCountdown">10s</div>
+    </div>
+  </div>
 </body>
 </html>
