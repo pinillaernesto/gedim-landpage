@@ -12,7 +12,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,700;1,9..40,400&display=swap" rel="stylesheet">
 
-  <link rel="stylesheet" href="styles.css?v=20260708c">
+  <link rel="stylesheet" href="styles.css?v=20260708d">
 </head>
 <body>
   <a href="#main" class="skip-link">Saltar al contenido</a>
@@ -22,7 +22,63 @@
   <header class="nav" id="nav">
     <div class="nav-inner">
       <a href="#hero" class="nav-logo" aria-label="GEDIM — inicio">
-        <span class="nav-logo-text">GEDIM</span>
+        <span class="nav-logo-inner">
+          <!--
+            GEDIM logomark: robotic hand gripping the letter G.
+            Fingers (3) drawn first (behind), G arc drawn on top so the
+            stroke crosses the finger tips — creating the grip illusion.
+            G: center(16,13) r=11, opening ±20° at right.
+            Bottom of G circle = y 24. Center finger top = y 20 → inside G → grip visible.
+          -->
+          <svg class="nav-logo-mark" viewBox="0 0 32 36" fill="none"
+               xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <defs>
+              <linearGradient id="logo-g" x1="2" y1="2" x2="28" y2="28" gradientUnits="userSpaceOnUse">
+                <stop offset="0%"   stop-color="#dde9f8"/>
+                <stop offset="35%"  stop-color="#8aafc8"/>
+                <stop offset="72%"  stop-color="#4a6e8a"/>
+                <stop offset="100%" stop-color="#274058"/>
+              </linearGradient>
+              <linearGradient id="logo-h" x1="16" y1="20" x2="16" y2="36" gradientUnits="userSpaceOnUse">
+                <stop offset="0%"   stop-color="#1e3254"/>
+                <stop offset="100%" stop-color="#050d18"/>
+              </linearGradient>
+            </defs>
+
+            <!-- ── Robotic fingers (behind G so arc crosses over them) ── -->
+            <!-- Left finger -->
+            <rect x="7"    y="21"   width="5" height="13" rx="2.5"
+                  fill="url(#logo-h)" stroke="#1a3458" stroke-width="0.8"/>
+            <rect x="8"    y="23.5" width="3" height="1"  rx="0.5" fill="#091828" opacity="0.85"/>
+            <rect x="8"    y="26.5" width="3" height="1"  rx="0.5" fill="#091828" opacity="0.85"/>
+            <!-- Center finger (tallest — tip reaches inside G arc) -->
+            <rect x="13.5" y="20"   width="5" height="14" rx="2.5"
+                  fill="url(#logo-h)" stroke="#1a3458" stroke-width="0.8"/>
+            <rect x="14.5" y="22"   width="3" height="1"  rx="0.5" fill="#091828" opacity="0.85"/>
+            <rect x="14.5" y="25"   width="3" height="1"  rx="0.5" fill="#091828" opacity="0.85"/>
+            <!-- Right finger -->
+            <rect x="20"   y="21"   width="5" height="13" rx="2.5"
+                  fill="url(#logo-h)" stroke="#1a3458" stroke-width="0.8"/>
+            <rect x="21"   y="23.5" width="3" height="1"  rx="0.5" fill="#091828" opacity="0.85"/>
+            <rect x="21"   y="26.5" width="3" height="1"  rx="0.5" fill="#091828" opacity="0.85"/>
+            <!-- Palm bar -->
+            <rect x="5.5" y="32.5" width="21" height="3.5" rx="1.8"
+                  fill="url(#logo-h)" stroke="#1a3458" stroke-width="0.6"/>
+            <!-- Green power LED -->
+            <circle cx="16" cy="34.2" r="1.5" fill="#00FF88"/>
+            <circle cx="16" cy="34.2" r="2.8" fill="#00FF88" opacity="0.14"/>
+
+            <!-- ── G letterform — drawn AFTER fingers (arc sits on top) ── -->
+            <!-- Arc: M top-of-opening, counterclockwise large arc, to bottom-of-opening -->
+            <path d="M 26.34 9.24 A 11 11 0 1 0 26.34 16.76"
+                  stroke="url(#logo-g)" stroke-width="4.5"
+                  stroke-linecap="round" fill="none"/>
+            <!-- Crossbar (horizontal shelf pointing inward from right wall) -->
+            <line x1="19" y1="13" x2="26.34" y2="13"
+                  stroke="url(#logo-g)" stroke-width="4.5" stroke-linecap="round"/>
+          </svg>
+          <span class="nav-logo-wordmark">EDIM</span>
+        </span>
         <span class="nav-logo-rule" aria-hidden="true"></span>
       </a>
       <nav class="nav-links" aria-label="Navegación principal">
@@ -585,6 +641,6 @@
   <!-- Scripts — GSAP from CDN, no ES modules, IIFE pattern -->
   <script defer src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
   <script defer src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
-  <script defer src="main.js?v=20260708c"></script>
+  <script defer src="main.js?v=20260708d"></script>
 </body>
 </html>

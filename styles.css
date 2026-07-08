@@ -213,14 +213,28 @@ ul { list-style: none; }
   display: flex;
   flex-direction: column;
   line-height: 1;
-  gap: 3px;
+  gap: 4px;
   flex-shrink: 0;
+  text-decoration: none;
 }
-.nav-logo-text {
+.nav-logo-inner {
+  display: flex;
+  align-items: flex-end;
+  gap: 5px;
+}
+/* SVG mark: robotic hand gripping the G */
+.nav-logo-mark {
+  height: 34px;
+  width: auto;
+  flex-shrink: 0;
+  display: block;
+}
+.nav-logo-wordmark {
   font-size: 1.375rem;
   font-weight: 700;
   color: #fff;
   letter-spacing: -.01em;
+  padding-bottom: 2px;
 }
 .nav-logo-rule {
   display: block;
