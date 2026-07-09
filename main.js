@@ -825,43 +825,39 @@
 
   /* ─── BOOT ────────────────────────────────────────────────────── */
   /* ─── ROBOT MOUSE TRACKING (page-wide) ─────────────────────── */
+  /*
+    Synthetic events are blocked by Spline (isTrusted = false).
+    Instead we CSS-rotate the spline-viewer element itself around the
+    robot's head position. Because the viewer renders a 3D scene, a
+    CSS perspective+rotateY looks like the robot physically turning —
+    not like a flat image tilting. The overflow:hidden on the container
+    still clips the Spline badge at the bottom.
+  */
   function initRobotTracking() {
     var sv = document.querySelector(".header-robot spline-viewer");
     if (!sv || !fineHover) return;
 
-    var canvas = null;  /* lazy-resolved once Spline finishes loading */
+    var curX = 0, tgtX = 0, curY = 0, tgtY = 0;
 
-    function getCanvas() {
-      if (canvas) return canvas;
-      try { canvas = sv.shadowRoot && sv.shadowRoot.querySelector("canvas"); }
-      catch (e) {}
-      return canvas;
-    }
+    /* Anchor rotation at the robot's head — (70px, 57px) in viewer-local
+       space lands near the head centre of the 140×240 rendered scene. */
+    sv.style.transformOrigin = "70px 57px";
 
     window.addEventListener("mousemove", function (e) {
-      var cnv = getCanvas();
-      if (!cnv) return;
-
-      var r = cnv.getBoundingClientRect();
-
-      /* When cursor is INSIDE the canvas, Spline already handles it natively.
-         Only inject when cursor is OUTSIDE to extend tracking to the full page. */
-      var inside = e.clientX >= r.left && e.clientX <= r.right &&
-                   e.clientY >= r.top  && e.clientY <= r.bottom;
-      if (inside) return;
-
-      /* Map full-viewport mouse position → equivalent position inside the canvas.
-         The robot's head will follow as if the cursor were at that canvas position. */
-      var cx = r.left + (e.clientX / window.innerWidth)  * r.width;
-      var cy = r.top  + (e.clientY / window.innerHeight) * r.height;
-
-      try {
-        cnv.dispatchEvent(new MouseEvent("mousemove", {
-          bubbles: false, cancelable: true, view: window,
-          clientX: cx, clientY: cy
-        }));
-      } catch (ex) {}
+      var nx = (e.clientX / window.innerWidth)  * 2 - 1; /* −1=left … +1=right */
+      var ny = (e.clientY / window.innerHeight) * 2 - 1; /* −1=top  … +1=bottom */
+      tgtX = -nx * 30;  /* ±30° rotateY — faces cursor left / right */
+      tgtY =  ny * 14;  /* ±14° rotateX — tilts up / down */
     }, { passive: true });
+
+    (function loop() {
+      curX += (tgtX - curX) * 0.05;
+      curY += (tgtY - curY) * 0.05;
+      sv.style.transform =
+        "perspective(400px) rotateY(" + curX.toFixed(2) + "deg)" +
+        " rotateX(" + curY.toFixed(2) + "deg)";
+      requestAnimationFrame(loop);
+    })();
   }
 
   function boot() {
