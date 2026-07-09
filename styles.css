@@ -228,19 +228,20 @@ ul { list-style: none; }
 
 /* ── Spline robot (left) ── */
 .header-robot {
-  width: 210px;
-  height: 110px;
-  overflow: hidden;
+  width: 100px;
+  height: 160px;
+  overflow: visible;
   flex-shrink: 0;
   position: relative;
   margin-left: calc(-1 * var(--gutter));
-  background: transparent;
+  align-self: flex-start;
+  z-index: 1;
 }
 .header-robot spline-viewer {
   position: absolute;
-  width: 250px;
-  height: 300px;
-  bottom: -70px;
+  width: 140px;
+  height: 280px;
+  top: 0;
   left: -20px;
   --spline-viewer-bg: transparent;
 }
@@ -565,7 +566,7 @@ ul { list-style: none; }
 
 /* Camera SVG */
 .camera-wrap {
-  width: 160px;
+  width: 220px;
   overflow: visible;
   filter: drop-shadow(0 0 30px rgba(0,255,136,.12));
   animation: cameraFloat 6s ease-in-out infinite;
@@ -1246,7 +1247,7 @@ ul { list-style: none; }
    18. RESPONSIVE — desktop (≥1024px)
    ============================================================= */
 @media (min-width: 1024px) {
-  .hero-camera-panel .camera-wrap { width: 190px; }
+  .hero-camera-panel .camera-wrap { width: 220px; }
 }
 
 /* =============================================================

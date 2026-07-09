@@ -483,8 +483,8 @@
       getBoundingClientRect() expands to include the beam (~900px wide), placing
       the calculated center far to the right of the actual camera.
     */
-    var SVG_PX = 140, SVG_PY = 130;
-    var cur = 0, tgt = 0;
+    var SVG_PX = 222, SVG_PY = 10;
+    var cur = 135, tgt = 135;
     var pivotEl = document.getElementById("cameraPivot");
 
     function getPivotScreen() {
@@ -515,9 +515,12 @@
       var p = getPivotScreen();
       var dx = e.clientX - p.x;
       var dy = e.clientY - p.y;
-      var angle = Math.atan2(dy, dx) * 180 / Math.PI;
-      /* ±160° lets the camera look hard left without crossing the ±180° snap */
-      tgt = Math.max(-160, Math.min(160, angle));
+      var raw = Math.atan2(dy, dx) * 180 / Math.PI;
+      /* Shortest-arc normalisation — prevents 320° spin when atan2 wraps ±180° */
+      var diff = raw - tgt;
+      while (diff > 180)  diff -= 360;
+      while (diff < -180) diff += 360;
+      tgt = Math.max(-160, Math.min(160, tgt + diff));
     }, { passive: true });
 
     (function loop() {

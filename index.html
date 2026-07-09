@@ -12,7 +12,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,700;1,9..40,400&display=swap" rel="stylesheet">
 
-  <link rel="stylesheet" href="styles.css?v=20260708i">
+  <link rel="stylesheet" href="styles.css?v=20260708j">
   <!-- Spline 3D viewer web component (registers <spline-viewer>) -->
   <script type="module" src="https://unpkg.com/@splinetool/viewer@1.9.82/build/spline-viewer.js"></script>
 </head>
@@ -314,7 +314,13 @@
               atan2(dy,dx) tracks the mouse directly — no angle offset needed.
               overflow="visible" lets the beam cone exit the viewBox freely.
             -->
-            <svg id="cameraRig" class="camera-svg" viewBox="0 0 280 260" fill="none"
+            <!--
+              Pivot at (222,10) — upper-right corner of the 230×220 viewBox.
+              At 0° the arm extends RIGHT; JS initialises cur=tgt=135 so the
+              camera starts pointing lower-left (toward the page interior).
+              overflow="visible" lets the beam and housing extend past the viewBox.
+            -->
+            <svg id="cameraRig" class="camera-svg" viewBox="0 0 230 220" fill="none"
                  xmlns="http://www.w3.org/2000/svg" overflow="visible">
               <defs>
                 <radialGradient id="lensGrad" cx="38%" cy="32%" r="65%">
@@ -327,89 +333,87 @@
                 </filter>
               </defs>
 
-              <!-- ══ ROTATING GROUP ══  pivots at 140,130 (center of SVG) -->
+              <!-- ══ ROTATING GROUP ══  pivots at (222, 10) — upper-right -->
               <g id="cameraBody">
 
-                <!-- Detection beam — layered cones that widen + fade with distance.
-                     Coordinates in SVG space; overflow="visible" reveals them all. -->
-                <path d="M232,130 L900,95  L900,165 Z" fill="rgba(0,255,136,0.11)"/>
-                <path d="M232,130 L900,62  L900,198 Z" fill="rgba(0,255,136,0.055)"/>
-                <path d="M232,130 L900,24  L900,236 Z" fill="rgba(0,255,136,0.028)"/>
-                <path d="M232,130 L900,-14 L900,274 Z" fill="rgba(0,255,136,0.013)"/>
-                <line x1="232" y1="130" x2="900" y2="130"
+                <!-- Detection beam: extends RIGHT from lens at 0°.
+                     After JS rotation (~135°) it sweeps lower-left toward page. -->
+                <path d="M308,10 L900,-12 L900,32 Z" fill="rgba(0,255,136,0.11)"/>
+                <path d="M308,10 L900,-40 L900,60 Z" fill="rgba(0,255,136,0.055)"/>
+                <path d="M308,10 L900,-74 L900,94 Z" fill="rgba(0,255,136,0.028)"/>
+                <path d="M308,10 L900,-110 L900,130 Z" fill="rgba(0,255,136,0.013)"/>
+                <line x1="308" y1="10" x2="900" y2="10"
                       stroke="#00FF88" stroke-width="0.7" opacity="0.20"/>
 
-                <!-- Short arm from pivot to housing back -->
-                <rect x="140" y="127" width="30" height="6" rx="2" fill="#1a2840"/>
+                <!-- Arm: pivot (222,10) → housing back (252,10) -->
+                <rect x="222" y="7" width="32" height="6" rx="2" fill="#1a2840"/>
 
                 <!-- Main housing body -->
-                <rect x="168" y="112" width="68" height="36" rx="10"
+                <rect x="250" y="-5" width="64" height="30" rx="9"
                       fill="#0d1a2a" stroke="#1a2d45" stroke-width="1.2"/>
-                <!-- Rear cap (arm side) -->
-                <rect x="168" y="116" width="20" height="28" rx="7" fill="#0a1422"/>
+                <!-- Rear cap -->
+                <rect x="250" y="-1" width="18" height="22" rx="6" fill="#0a1422"/>
                 <!-- Front section (lens side) -->
-                <rect x="212" y="114" width="22" height="32" rx="7" fill="#111e30"/>
+                <rect x="294" y="-3" width="20" height="26" rx="6" fill="#111e30"/>
 
-                <!-- Lens bezel -->
-                <circle cx="222" cy="130" r="15.5"
+                <!-- Lens bezel at (308,10) -->
+                <circle cx="308" cy="10" r="13"
                         fill="#060e1a" stroke="#1a3355" stroke-width="1.8"/>
                 <!-- Lens glass -->
-                <circle cx="222" cy="130" r="11"   fill="url(#lensGrad)"/>
+                <circle cx="308" cy="10" r="9.5"  fill="url(#lensGrad)"/>
                 <!-- Inner ring -->
-                <circle cx="222" cy="130" r="7.5"
+                <circle cx="308" cy="10" r="6.5"
                         fill="#030810" stroke="#0e2035" stroke-width="0.75"/>
                 <!-- Aperture -->
-                <circle cx="222" cy="130" r="4"    fill="#010306"/>
+                <circle cx="308" cy="10" r="3.5"  fill="#010306"/>
                 <!-- Reflection -->
-                <ellipse cx="217" cy="125" rx="3.2" ry="2"
-                         fill="rgba(100,180,255,0.28)" transform="rotate(-25 217 125)"/>
+                <ellipse cx="303" cy="5" rx="2.8" ry="1.8"
+                         fill="rgba(100,180,255,0.28)" transform="rotate(-25 303 5)"/>
                 <!-- Accent ring -->
-                <circle cx="222" cy="130" r="15.5"
+                <circle cx="308" cy="10" r="13"
                         fill="none" stroke="#00FF88" stroke-width="0.5" opacity="0.22"/>
 
                 <!-- Vent lines -->
-                <line x1="192" y1="114" x2="192" y2="148"
+                <line x1="272" y1="-5" x2="272" y2="25"
                       stroke="#1a2d45" stroke-width="0.7" opacity="0.5"/>
-                <line x1="200" y1="114" x2="200" y2="148"
+                <line x1="280" y1="-5" x2="280" y2="25"
                       stroke="#1a2d45" stroke-width="0.7" opacity="0.5"/>
-                <line x1="208" y1="114" x2="208" y2="148"
+                <line x1="288" y1="-5" x2="288" y2="25"
                       stroke="#1a2d45" stroke-width="0.7" opacity="0.5"/>
 
-                <!-- LED -->
-                <circle class="camera-led" cx="175" cy="116" r="4" fill="#00FF88"/>
-                <circle cx="175" cy="116" r="6"
+                <!-- LED indicator -->
+                <circle class="camera-led" cx="256" cy="-3" r="4" fill="#00FF88"/>
+                <circle cx="256" cy="-3" r="6"
                         fill="#00FF88" opacity="0.28" filter="url(#ledBloom)"/>
 
               </g>
               <!-- ══ END ROTATING GROUP ══ -->
 
-              <!-- Invisible pivot marker — JS reads THIS rect, not the SVG's
-                   (SVG getBoundingClientRect includes overflow and gives wrong center) -->
-              <circle id="cameraPivot" cx="140" cy="130" r="1" fill="none" stroke="none"/>
+              <!-- Invisible pivot marker — upper-right of viewBox.
+                   JS reads getBoundingClientRect() on this, not the SVG element. -->
+              <circle id="cameraPivot" cx="222" cy="10" r="1" fill="none" stroke="none"/>
 
-              <!-- Mount base — FIXED, rendered above the rotating group -->
-              <circle cx="140" cy="130" r="16"
+              <!-- Mount base — FIXED at pivot (222,10) -->
+              <circle cx="222" cy="10" r="15"
                       fill="#0d1828" stroke="#1e3a5a" stroke-width="1.5"/>
-              <circle cx="140" cy="130" r="10"
+              <circle cx="222" cy="10" r="9"
                       fill="#08101c" stroke="rgba(0,255,136,0.2)" stroke-width="1"/>
-              <circle cx="140" cy="130" r="5"
+              <circle cx="222" cy="10" r="4.5"
                       fill="#00FF88" opacity="0.75" filter="url(#ledBloom)"/>
 
-              <!-- HUD corners -->
-              <path d="M10 20  L10 8   L22 8"     stroke="#00FF88" stroke-width="1" opacity="0.28"/>
-              <path d="M270 20 L270 8  L258 8"    stroke="#00FF88" stroke-width="1" opacity="0.28"/>
-              <path d="M10 248 L10 260 L22 260"   stroke="#00FF88" stroke-width="1" opacity="0.28"/>
-              <path d="M270 248 L270 260 L258 260" stroke="#00FF88" stroke-width="1" opacity="0.28"/>
+              <!-- HUD corners (bottom-left / top-left only; top-right = mount) -->
+              <path d="M8,18  L8,6   L18,6"    stroke="#00FF88" stroke-width="1" opacity="0.28"/>
+              <path d="M8,210 L8,220 L18,220"  stroke="#00FF88" stroke-width="1" opacity="0.28"/>
 
               <!-- HUD labels -->
-              <text x="18"  y="256" font-family="DM Sans, monospace" font-size="7"
+              <text x="22"  y="216" font-family="DM Sans, monospace" font-size="7"
                     fill="#00FF88" opacity="0.4" letter-spacing="0.1em">PTZ-01</text>
-              <text x="190" y="256" font-family="DM Sans, monospace" font-size="7"
+              <text x="88" y="216" font-family="DM Sans, monospace" font-size="7"
                     fill="#00FF88" opacity="0.4" letter-spacing="0.1em">● TRACK</text>
 
-              <!-- Outer deco ring -->
-              <circle cx="140" cy="130" r="106"
-                      stroke="#00FF88" stroke-width="0.6" stroke-dasharray="2 10" opacity="0.09"/>
+              <!-- Deco ring around pivot -->
+              <circle cx="222" cy="10" r="100"
+                      stroke="#00FF88" stroke-width="0.6" stroke-dasharray="2 10" opacity="0.07"/>
             </svg>
           </div><!-- /camera-wrap -->
 
@@ -843,7 +847,7 @@
   <!-- Scripts — GSAP from CDN, no ES modules, IIFE pattern -->
   <script defer src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
   <script defer src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
-  <script defer src="main.js?v=20260708i"></script>
+  <script defer src="main.js?v=20260708j"></script>
   <!-- Water particle canvas — fixed, above hero content, below nav -->
   <canvas id="sprinklerCanvas" class="sprinkler-canvas" aria-hidden="true"></canvas>
   <!-- Fire alarm banner (bottom) — hidden until fire cycle triggers -->
