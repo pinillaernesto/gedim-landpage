@@ -483,7 +483,7 @@
       getBoundingClientRect() expands to include the beam (~900px wide), placing
       the calculated center far to the right of the actual camera.
     */
-    var SVG_PX = 222, SVG_PY = 10;
+    var SVG_PX = 207, SVG_PY = 44;
     var cur = 135, tgt = 135;
     var pivotEl = document.getElementById("cameraPivot");
 
@@ -515,16 +515,15 @@
       var p = getPivotScreen();
       var dx = e.clientX - p.x;
       var dy = e.clientY - p.y;
-      var raw = Math.atan2(dy, dx) * 180 / Math.PI;
-      /* Shortest-arc normalisation — prevents 320° spin when atan2 wraps ±180° */
-      var diff = raw - tgt;
-      while (diff > 180)  diff -= 360;
-      while (diff < -180) diff += 360;
-      tgt = Math.max(-160, Math.min(160, tgt + diff));
+      tgt = Math.atan2(dy, dx) * 180 / Math.PI;
     }, { passive: true });
 
     (function loop() {
-      cur += (tgt - cur) * 0.08;
+      /* Shortest-arc lerp — smoothly follows tgt without spinning 360° */
+      var diff = tgt - cur;
+      while (diff >  180) diff -= 360;
+      while (diff < -180) diff += 360;
+      cur += diff * 0.08;
       body.setAttribute("transform",
         "rotate(" + cur.toFixed(2) + "," + SVG_PX + "," + SVG_PY + ")");
       requestAnimationFrame(loop);
@@ -723,9 +722,20 @@
 
         io.unobserve(el);
       });
-    }, { threshold: 0.25 });
+    }, { threshold: 0.05 });
 
     counters.forEach(function (el) { io.observe(el); });
+
+    /* 6s safety: fire any counter still showing 0 */
+    setTimeout(function () {
+      counters.forEach(function (el) {
+        if (el.textContent === "0" || el.textContent === "0+") {
+          var target = parseInt(el.dataset.count, 10);
+          var suffix = el.dataset.suffix || "";
+          el.textContent = target + suffix;
+        }
+      });
+    }, 6000);
   }
 
   /* ─── GSAP ANIMATIONS ─────────────────────────────────────────── */
@@ -824,55 +834,6 @@
   }
 
   /* ─── BOOT ────────────────────────────────────────────────────── */
-  /* ─── ROBOT MOUSE TRACKING (page-wide) ─────────────────────── */
-  /*
-    Exact same mechanism as initCamera():
-      1. Read pivot from gimbal's bounding rect (like #cameraPivot)
-      2. atan2(dy, dx) gives the angle from robot to cursor
-      3. Lerp cur toward tgt at the same rate as the camera
-      4. Apply as rotateY + rotateX on the gimbal wrapper
-         (camera uses SVG rotate; robot uses CSS perspective rotate — same idea)
-  */
-  function initRobotTracking() {
-    var gimbal = document.getElementById("robotGimbal");
-    if (!gimbal) return;                       /* no fineHover guard — always run */
-
-    var cur = 0, tgt = 0;
-
-    window.addEventListener("mousemove", function (e) {
-      var r   = gimbal.getBoundingClientRect();
-      var px  = r.left + r.width  / 2;        /* pivot = gimbal centre on screen */
-      var py  = r.top  + r.height / 2;
-      var dx  = e.clientX - px;
-      var dy  = e.clientY - py;
-      var raw = Math.atan2(dy, dx) * 180 / Math.PI;
-
-      /* Shortest-arc (same fix as camera spin bug) */
-      var diff = raw - tgt;
-      while (diff >  180) diff -= 360;
-      while (diff < -180) diff += 360;
-      tgt = Math.max(-160, Math.min(160, tgt + diff));
-    }, { passive: true });
-
-    (function loop() {
-      cur += (tgt - cur) * 0.08;              /* same lerp rate as camera */
-
-      /* Convert the 2D tracking angle to 3D head orientation:
-           angle   0° (right) → rotateY −45° (look right)
-           angle  90° (down)  → rotateX +20° (look down)
-           angle 180° (left)  → rotateY +45° (look left)
-           angle −90° (up)    → rotateX −20° (look up)          */
-      var rad = cur * Math.PI / 180;
-      var ry  = -Math.cos(rad) * 45;
-      var rx  =  Math.sin(rad) * 20;
-
-      gimbal.style.transform =
-        "perspective(350px) rotateX(" + rx.toFixed(2) + "deg)" +
-        " rotateY(" + ry.toFixed(2) + "deg)";
-      requestAnimationFrame(loop);
-    })();
-  }
-
   function boot() {
     safe(initNav,           "initNav");
     safe(initSmoothScroll,  "initSmoothScroll");
@@ -888,7 +849,6 @@
     safe(initCounters,      "initCounters");
     safe(initContactForm,    "initContactForm");
     safe(initGSAP,           "initGSAP");
-    safe(initRobotTracking,  "initRobotTracking");
 
     document.documentElement.classList.add("is-ready");
   }

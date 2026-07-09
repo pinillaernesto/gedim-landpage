@@ -224,24 +224,20 @@ ul { list-style: none; }
   max-width: var(--container);
   margin-inline: auto;
   gap: 1rem;
+  position: relative;
 }
 
-/* ── Spline robot (left) ── */
-/* robot-gimbal: plain flex child — JS rotates this, no overflow:hidden so
-   the 3D perspective transform is never clipped by the parent             */
-.robot-gimbal {
-  flex-shrink: 0;
-  align-self: center;
-  margin-left: calc(-1 * var(--gutter));
-  z-index: 1;
-}
-
-/* header-robot: pure clip window — hides the Spline badge at the bottom */
+/* ── Spline robot (left) — absolute so logo starts at var(--gutter) ── */
 .header-robot {
+  position: absolute;
+  left: calc(var(--gutter) - 33px);
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 2;
   width: 65px;
   height: 90px;
   overflow: hidden;
-  position: relative;
+  background: transparent;
 }
 .header-robot spline-viewer {
   position: absolute;
@@ -250,6 +246,7 @@ ul { list-style: none; }
   top: -25px;
   left: -38px;
   --spline-viewer-bg: transparent;
+  background: transparent;
 }
 /* Belt-and-suspenders: hide Spline branding via shadow-part if supported */
 .header-robot spline-viewer::part(logo) { display: none !important; }
@@ -266,6 +263,14 @@ ul { list-style: none; }
   width: auto;
   display: block;
   border-radius: 4px;
+}
+.logo-wordmark {
+  font-size: 1.5rem;
+  font-weight: 700;
+  letter-spacing: .12em;
+  color: #fff;
+  text-transform: uppercase;
+  line-height: 1;
 }
 
 /* ── Desktop nav links ── */
@@ -413,7 +418,7 @@ ul { list-style: none; }
 }
 
 .hero-title {
-  font-size: clamp(2rem, 6vw, 4.25rem);
+  font-size: clamp(2.8rem, 5.5vw, 4.5rem);
   color: #fff;
   margin-bottom: 1.25rem;
   line-height: 1.04;
@@ -725,6 +730,23 @@ ul { list-style: none; }
 .problem {
   background: var(--bg-mid);
   padding-block: clamp(4rem, 8vw, 7rem);
+  position: relative;
+  overflow: hidden;
+}
+.problem::before {
+  content: "80%";
+  position: absolute;
+  right: -2rem;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: clamp(8rem, 18vw, 16rem);
+  font-weight: 700;
+  color: var(--accent);
+  opacity: .04;
+  line-height: 1;
+  pointer-events: none;
+  user-select: none;
+  letter-spacing: -.05em;
 }
 
 .problem-text {
@@ -772,6 +794,7 @@ ul { list-style: none; }
 .service-card {
   background: var(--bg-card);
   border: 1px solid var(--border);
+  border-top: 2px solid transparent;
   border-radius: calc(var(--radius) * 2);
   overflow: hidden;
   display: flex;
@@ -781,6 +804,7 @@ ul { list-style: none; }
 }
 .service-card:hover {
   border-color: var(--border-hover);
+  border-top-color: #00FF88;
   box-shadow: 0 0 40px rgba(0,255,136,.08), 0 8px 32px rgba(0,0,0,.4);
   transform: translateY(-3px);
 }
@@ -868,6 +892,19 @@ ul { list-style: none; }
   flex-direction: column;
   justify-content: space-between;
   overflow: hidden;
+}
+.cctv-feed img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: .45;
+  z-index: 0;
+}
+.feed-label, .feed-ts, .feed-dot {
+  position: relative;
+  z-index: 1;
 }
 /* TV scanline texture */
 .cctv-feed::before {
@@ -1018,6 +1055,35 @@ ul { list-style: none; }
   line-height: 2;
   border-top: 1px solid var(--border);
   padding-top: 2rem;
+  margin-bottom: 2.5rem;
+}
+
+.proof-brands {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+  padding-top: 2rem;
+  border-top: 1px solid var(--border);
+}
+.proof-brands-label {
+  font-size: .7rem;
+  font-weight: 600;
+  letter-spacing: .18em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+.proof-brands-list {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: .75rem 2rem;
+}
+.proof-brand {
+  font-size: .9375rem;
+  font-weight: 500;
+  color: rgba(255,255,255,.55);
+  letter-spacing: .04em;
 }
 
 /* =============================================================
@@ -1256,6 +1322,15 @@ ul { list-style: none; }
    ============================================================= */
 @media (min-width: 1024px) {
   .hero-camera-panel .camera-wrap { width: 220px; }
+
+  .problem, .services, .proof, .maintenance, .contact {
+    padding-block: 6rem;
+  }
+
+  .proof-metrics .metric:not(:last-child) {
+    border-right: 1px solid var(--border);
+    padding-right: 4rem;
+  }
 }
 
 /* =============================================================

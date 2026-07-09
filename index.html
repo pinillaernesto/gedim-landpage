@@ -4,15 +4,15 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="theme-color" content="#070B10">
-  <title>GEDIM — Seguridad Integrada · Bogotá, Colombia</title>
-  <meta name="description" content="Sistemas de seguridad integrada en Bogotá: redes contra incendio, control de acceso, videovigilancia y cableado estructurado. 15 años de experiencia. Honeywell · Notifier · 3M.">
+  <title>GEDIM — Sistemas de Seguridad Integrada · Bogotá, Colombia</title>
+  <meta name="description" content="15 años instalando sistemas contra incendio, control de acceso y videovigilancia en Bogotá. Certificados NFPA. Honeywell · Notifier · 3M · Gamewell.">
 
   <!-- Preconnect fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,700;1,9..40,400&display=swap" rel="stylesheet">
 
-  <link rel="stylesheet" href="styles.css?v=20260708p">
+  <link rel="stylesheet" href="styles.css?v=20260709k">
   <!-- Spline 3D viewer web component (registers <spline-viewer>) -->
   <script type="module" src="https://unpkg.com/@splinetool/viewer@1.9.82/build/spline-viewer.js"></script>
 </head>
@@ -26,11 +26,9 @@
     <!-- ── Brand bar (top row) ── -->
     <div class="header-bar">
       <div class="header-inner">
-        <!-- Spline 3D robot (left) — .robot-gimbal is the JS-controlled pivot -->
-        <div class="robot-gimbal" id="robotGimbal" aria-hidden="true">
-          <div class="header-robot">
-            <spline-viewer url="https://prod.spline.design/kZDDjO5HuC9GJUM2/scene.splinecode" loading="lazy"></spline-viewer>
-          </div>
+        <!-- Spline 3D robot (left) -->
+        <div class="header-robot" aria-hidden="true">
+          <spline-viewer url="https://prod.spline.design/kZDDjO5HuC9GJUM2/scene.splinecode" loading="lazy"></spline-viewer>
         </div>
         <!-- GEDIM logo -->
         <a href="#hero" class="header-logo" aria-label="GEDIM — inicio">
@@ -283,9 +281,9 @@
       <div class="hero-inner">
         <!-- Text column — first in DOM for SEO; camera moves above on mobile via CSS order -->
         <div class="hero-content">
-          <p class="hero-tag" aria-hidden="true">SEGURIDAD INTEGRADA • BOGOTÁ, COLOMBIA</p>
-          <h1 class="hero-title">Tu seguridad no<br>depende de la suerte.</h1>
-          <p class="hero-body">Diseñamos, instalamos y mantenemos sistemas que<br class="br-desktop"> funcionan cuando más los necesitas.</p>
+          <p class="hero-tag" aria-hidden="true">Sistemas de detección y extinción de incendio &nbsp;·&nbsp; Control de acceso &nbsp;·&nbsp; Video vigilancia &nbsp;·&nbsp; Mantenimiento preventivo y correctivo</p>
+          <h1 class="hero-title">Si el sistema falla,<br>no hay segunda oportunidad.</h1>
+          <p class="hero-body">Diseñamos e instalamos sistemas de seguridad que cumplen la norma, satisfacen a las aseguradoras y responden cuando ocurre lo inevitable.</p>
           <div class="hero-actions">
             <a href="#contacto" class="btn btn-primary">Habla con un especialista →</a>
             <a href="#servicios" class="btn btn-ghost">Ver servicios</a>
@@ -296,8 +294,8 @@
               <span class="hero-stat-l">años de operación</span>
             </div>
             <div class="hero-stat hero-stat--brands">
-              <span class="hero-stat-b">Honeywell · Notifier · 3M</span>
-              <span class="hero-stat-l">marcas certificadas</span>
+              <span class="hero-stat-b">NFPA · NSR-10</span>
+              <span class="hero-stat-l">normas que cumplimos</span>
             </div>
             <div class="hero-stat">
               <span class="hero-stat-n">Bogotá</span>
@@ -317,7 +315,7 @@
               overflow="visible" lets the beam cone exit the viewBox freely.
             -->
             <!--
-              Pivot at (222,10) — upper-right corner of the 230×220 viewBox.
+              Pivot at (210,40) — upper-right area of the 230×220 viewBox.
               At 0° the arm extends RIGHT; JS initialises cur=tgt=135 so the
               camera starts pointing lower-left (toward the page interior).
               overflow="visible" lets the beam and housing extend past the viewBox.
@@ -335,72 +333,72 @@
                 </filter>
               </defs>
 
-              <!-- ══ ROTATING GROUP ══  pivots at (222, 10) — upper-right -->
+              <!-- ══ ROTATING GROUP ══  pivots at (210, 40) — upper-right -->
               <g id="cameraBody">
 
                 <!-- Detection beam: extends RIGHT from lens at 0°.
                      After JS rotation (~135°) it sweeps lower-left toward page. -->
-                <path d="M308,10 L900,-12 L900,32 Z" fill="rgba(0,255,136,0.11)"/>
-                <path d="M308,10 L900,-40 L900,60 Z" fill="rgba(0,255,136,0.055)"/>
-                <path d="M308,10 L900,-74 L900,94 Z" fill="rgba(0,255,136,0.028)"/>
-                <path d="M308,10 L900,-110 L900,130 Z" fill="rgba(0,255,136,0.013)"/>
-                <line x1="308" y1="10" x2="900" y2="10"
+                <path d="M293,44 L900,22 L900,66 Z" fill="rgba(0,255,136,0.11)"/>
+                <path d="M293,44 L900,-6 L900,94 Z" fill="rgba(0,255,136,0.055)"/>
+                <path d="M293,44 L900,-40 L900,128 Z" fill="rgba(0,255,136,0.028)"/>
+                <path d="M293,44 L900,-76 L900,164 Z" fill="rgba(0,255,136,0.013)"/>
+                <line x1="293" y1="44" x2="900" y2="44"
                       stroke="#00FF88" stroke-width="0.7" opacity="0.20"/>
 
-                <!-- Arm: pivot (222,10) → housing back (252,10) -->
-                <rect x="222" y="7" width="32" height="6" rx="2" fill="#1a2840"/>
+                <!-- Arm: pivot (207,44) → housing back (239,44) -->
+                <rect x="207" y="41" width="32" height="6" rx="2" fill="#1a2840"/>
 
                 <!-- Main housing body -->
-                <rect x="250" y="-5" width="64" height="30" rx="9"
+                <rect x="235" y="29" width="64" height="30" rx="9"
                       fill="#0d1a2a" stroke="#1a2d45" stroke-width="1.2"/>
                 <!-- Rear cap -->
-                <rect x="250" y="-1" width="18" height="22" rx="6" fill="#0a1422"/>
+                <rect x="235" y="33" width="18" height="22" rx="6" fill="#0a1422"/>
                 <!-- Front section (lens side) -->
-                <rect x="294" y="-3" width="20" height="26" rx="6" fill="#111e30"/>
+                <rect x="279" y="31" width="20" height="26" rx="6" fill="#111e30"/>
 
-                <!-- Lens bezel at (308,10) -->
-                <circle cx="308" cy="10" r="13"
+                <!-- Lens bezel at (293,44) -->
+                <circle cx="293" cy="44" r="13"
                         fill="#060e1a" stroke="#1a3355" stroke-width="1.8"/>
                 <!-- Lens glass -->
-                <circle cx="308" cy="10" r="9.5"  fill="url(#lensGrad)"/>
+                <circle cx="293" cy="44" r="9.5"  fill="url(#lensGrad)"/>
                 <!-- Inner ring -->
-                <circle cx="308" cy="10" r="6.5"
+                <circle cx="293" cy="44" r="6.5"
                         fill="#030810" stroke="#0e2035" stroke-width="0.75"/>
                 <!-- Aperture -->
-                <circle cx="308" cy="10" r="3.5"  fill="#010306"/>
+                <circle cx="293" cy="44" r="3.5"  fill="#010306"/>
                 <!-- Reflection -->
-                <ellipse cx="303" cy="5" rx="2.8" ry="1.8"
-                         fill="rgba(100,180,255,0.28)" transform="rotate(-25 303 5)"/>
+                <ellipse cx="300" cy="42" rx="2.8" ry="1.8"
+                         fill="rgba(100,180,255,0.28)" transform="rotate(-25 300 42)"/>
                 <!-- Accent ring -->
-                <circle cx="308" cy="10" r="13"
+                <circle cx="293" cy="44" r="13"
                         fill="none" stroke="#00FF88" stroke-width="0.5" opacity="0.22"/>
 
                 <!-- Vent lines -->
-                <line x1="272" y1="-5" x2="272" y2="25"
+                <line x1="257" y1="29" x2="257" y2="59"
                       stroke="#1a2d45" stroke-width="0.7" opacity="0.5"/>
-                <line x1="280" y1="-5" x2="280" y2="25"
+                <line x1="265" y1="29" x2="265" y2="59"
                       stroke="#1a2d45" stroke-width="0.7" opacity="0.5"/>
-                <line x1="288" y1="-5" x2="288" y2="25"
+                <line x1="273" y1="29" x2="273" y2="59"
                       stroke="#1a2d45" stroke-width="0.7" opacity="0.5"/>
 
                 <!-- LED indicator -->
-                <circle class="camera-led" cx="256" cy="-3" r="4" fill="#00FF88"/>
-                <circle cx="256" cy="-3" r="6"
+                <circle class="camera-led" cx="241" cy="31" r="4" fill="#00FF88"/>
+                <circle cx="241" cy="31" r="6"
                         fill="#00FF88" opacity="0.28" filter="url(#ledBloom)"/>
 
               </g>
               <!-- ══ END ROTATING GROUP ══ -->
 
-              <!-- Invisible pivot marker — upper-right of viewBox.
+              <!-- Invisible pivot marker.
                    JS reads getBoundingClientRect() on this, not the SVG element. -->
-              <circle id="cameraPivot" cx="222" cy="10" r="1" fill="none" stroke="none"/>
+              <circle id="cameraPivot" cx="207" cy="44" r="1" fill="none" stroke="none"/>
 
-              <!-- Mount base — FIXED at pivot (222,10) -->
-              <circle cx="222" cy="10" r="15"
+              <!-- Mount base — FIXED at pivot (207,44) -->
+              <circle cx="207" cy="44" r="15"
                       fill="#0d1828" stroke="#1e3a5a" stroke-width="1.5"/>
-              <circle cx="222" cy="10" r="9"
+              <circle cx="207" cy="44" r="9"
                       fill="#08101c" stroke="rgba(0,255,136,0.2)" stroke-width="1"/>
-              <circle cx="222" cy="10" r="4.5"
+              <circle cx="207" cy="44" r="4.5"
                       fill="#00FF88" opacity="0.75" filter="url(#ledBloom)"/>
 
               <!-- HUD corners (bottom-left / top-left only; top-right = mount) -->
@@ -414,7 +412,7 @@
                     fill="#00FF88" opacity="0.4" letter-spacing="0.1em">● TRACK</text>
 
               <!-- Deco ring around pivot -->
-              <circle cx="222" cy="10" r="100"
+              <circle cx="207" cy="44" r="100"
                       stroke="#00FF88" stroke-width="0.6" stroke-dasharray="2 10" opacity="0.07"/>
             </svg>
           </div><!-- /camera-wrap -->
@@ -458,8 +456,8 @@
     <section class="problem" id="problema" aria-label="El problema">
       <div class="container">
         <div class="problem-text reveal">
-          <h2>¿Cuándo fue la última vez<br>que probaste tu sistema?</h2>
-          <p>La mayoría de los sistemas fallan no porque sean malos, sino porque nadie los revisó. Un mantenimiento semestral puede ser la diferencia entre un incidente controlado y una pérdida total.</p>
+          <h2>El 80% de los sistemas<br>falla en la primera emergencia real.</h2>
+          <p>No porque sean malos. Porque nadie los revisó. Muchas instalaciones pasan años sin una prueba funcional. Cuando ocurre el incidente, el sistema no responde — y la póliza de seguro tampoco.</p>
           <div class="problem-rule" aria-hidden="true"></div>
         </div>
       </div>
@@ -468,8 +466,8 @@
     <!-- ═══ SERVICIOS ═══ -->
     <section class="services" id="servicios" aria-label="Servicios">
       <div class="container">
-        <p class="section-tag">Lo que hacemos</p>
-        <h2 class="section-title">Sistemas que responden.</h2>
+        <p class="section-tag">Lo que instalamos</p>
+        <h2 class="section-title">Cuatro sistemas.<br>Un solo integrador.</h2>
         <div class="services-grid">
 
           <!-- Card 1 — Incendio -->
@@ -568,9 +566,9 @@
                   <path d="M11 19C7.69 19 5 16.31 5 13C5 10 7 7.5 7 7.5C7 7.5 8.5 11 10.5 11C10.5 11 9.5 10 9.5 8C9.5 8 11.5 10 12 12C12.5 9.5 14 8 15 8C15 8 17 10 17 13C17 16.31 14.31 19 11 19Z" fill="#FF4500" opacity="0.9"/>
                 </svg>
               </div>
-              <h3>Extinción antes de que el fuego decida.</h3>
-              <p>Instalamos sistemas de detección y extinción con agente limpio Novec 1230, FM-200 y rociadores. Diseño, instalación y mantenimiento certificado de fábrica con Honeywell, Notifier y Gamewell.</p>
-              <a href="#contacto" class="card-link">Más información →</a>
+              <h3>Detección y extinción<br>certificada NFPA.</h3>
+              <p>Agente limpio Novec 1230, FM-200 y rociadores. Diseño hidráulico, instalación y mantenimiento certificado con Honeywell, Notifier y Gamewell.</p>
+              <a href="#contacto" class="card-link">Solicitar diseño →</a>
             </div>
           </article>
 
@@ -605,9 +603,9 @@
                   <line x1="5" y1="14" x2="17" y2="14" stroke="#00FF88" stroke-width="1.2" opacity="0.4"/>
                 </svg>
               </div>
-              <h3>Quién entra, cuándo y por dónde.</h3>
-              <p>Control biométrico, RFID y vehicular integrado. Barreras, torniquetes y automatización de puertas para instalaciones de cualquier escala.</p>
-              <a href="#contacto" class="card-link">Más información →</a>
+              <h3>Control de acceso<br>biométrico y vehicular.</h3>
+              <p>RFID, huella y reconocimiento facial. Barreras, torniquetes y automatización de puertas integradas con el panel de incendio.</p>
+              <a href="#contacto" class="card-link">Solicitar diseño →</a>
             </div>
           </article>
 
@@ -616,21 +614,25 @@
             <div class="card-visual" aria-hidden="true">
               <div class="cctv-grid">
                 <div class="cctv-feed">
+                  <img src="assets/img/cam01.jpg" alt="" loading="lazy" onerror="this.style.display='none'">
                   <span class="feed-label">CAM 01</span>
                   <span class="feed-ts" data-feed="0">00:00:00</span>
                   <div class="feed-dot"></div>
                 </div>
                 <div class="cctv-feed cctv-feed--glitch">
+                  <img src="assets/img/cam02.jpg" alt="" loading="lazy" onerror="this.style.display='none'">
                   <span class="feed-label">CAM 02</span>
                   <span class="feed-ts" data-feed="1">00:00:00</span>
                   <div class="feed-dot"></div>
                 </div>
                 <div class="cctv-feed">
+                  <img src="assets/img/cam03.jpg" alt="" loading="lazy" onerror="this.style.display='none'">
                   <span class="feed-label">CAM 03</span>
                   <span class="feed-ts" data-feed="2">00:00:00</span>
                   <div class="feed-dot"></div>
                 </div>
                 <div class="cctv-feed">
+                  <img src="assets/img/cam04.jpg" alt="" loading="lazy" onerror="this.style.display='none'">
                   <span class="feed-label">CAM 04</span>
                   <span class="feed-ts" data-feed="3">00:00:00</span>
                   <div class="feed-dot"></div>
@@ -645,9 +647,9 @@
                   <circle cx="8" cy="11" r="2" fill="#00FF88" opacity="0.3"/>
                 </svg>
               </div>
-              <h3>Ver todo, sin puntos ciegos.</h3>
-              <p>Cámaras IP y analógicas HD con analítica de video. Monitoreo remoto y grabación 24/7 con respaldo en sitio o en la nube.</p>
-              <a href="#contacto" class="card-link">Más información →</a>
+              <h3>Videovigilancia con analítica<br>y monitoreo 24/7.</h3>
+              <p>Cámaras IP y analógicas HD con detección de intrusos, conteo de personas y lectura de placas. Grabación local y en la nube.</p>
+              <a href="#contacto" class="card-link">Solicitar diseño →</a>
             </div>
           </article>
 
@@ -683,6 +685,13 @@
                 <circle class="net-pulse" id="np0" cx="130" cy="80" r="3.5" fill="#00FF88" opacity="0"/>
                 <circle class="net-pulse" id="np1" cx="130" cy="80" r="3.5" fill="#00FF88" opacity="0"/>
                 <circle class="net-pulse" id="np2" cx="130" cy="80" r="3.5" fill="#00FF88" opacity="0"/>
+                <!-- Node labels -->
+                <text x="38"  y="17"  font-family="DM Sans,Arial,sans-serif" font-size="8" fill="rgba(0,255,136,0.75)" text-anchor="middle" letter-spacing="0.04em">Extinción</text>
+                <text x="130" y="9"   font-family="DM Sans,Arial,sans-serif" font-size="8" fill="rgba(0,255,136,0.75)" text-anchor="middle" letter-spacing="0.04em">Detección</text>
+                <text x="222" y="17"  font-family="DM Sans,Arial,sans-serif" font-size="8" fill="rgba(0,255,136,0.75)" text-anchor="middle" letter-spacing="0.04em">Cámaras</text>
+                <text x="38"  y="151" font-family="DM Sans,Arial,sans-serif" font-size="8" fill="rgba(0,255,136,0.75)" text-anchor="middle" letter-spacing="0.04em">Acceso</text>
+                <text x="130" y="158" font-family="DM Sans,Arial,sans-serif" font-size="8" fill="rgba(0,255,136,0.75)" text-anchor="middle" letter-spacing="0.04em">Cableado</text>
+                <text x="222" y="151" font-family="DM Sans,Arial,sans-serif" font-size="8" fill="rgba(0,255,136,0.75)" text-anchor="middle" letter-spacing="0.04em">RFID</text>
               </svg>
             </div>
             <div class="card-body">
@@ -699,9 +708,9 @@
                   <line x1="11" y1="11" x2="18" y2="17" stroke="#00FF88" stroke-width="0.9"/>
                 </svg>
               </div>
-              <h3>Un solo punto de control para todo.</h3>
-              <p>Integramos incendio, acceso y video en una plataforma unificada. Cableado estructurado de datos incluido en el mismo proyecto.</p>
-              <a href="#contacto" class="card-link">Más información →</a>
+              <h3>Integración total en una<br>sola plataforma.</h3>
+              <p>Incendio, acceso y video gestionados desde un único sistema. Cableado estructurado Cat6A incluido en el mismo contrato.</p>
+              <a href="#contacto" class="card-link">Solicitar diseño →</a>
             </div>
           </article>
 
@@ -712,24 +721,33 @@
     <!-- ═══ PRUEBA SOCIAL ═══ -->
     <section class="proof" id="nosotros" aria-label="Trayectoria">
       <div class="container">
-        <h2 class="proof-title reveal">15 años. Cero compromisos<br>con la mediocridad.</h2>
+        <h2 class="proof-title reveal">15 años resolviendo<br>lo que otros no pueden.</h2>
         <div class="proof-metrics">
           <div class="metric reveal">
             <span class="metric-num" data-count="15" data-suffix="+">0</span>
             <span class="metric-label">años en el mercado</span>
           </div>
           <div class="metric reveal">
-            <span class="metric-num" data-count="4">0</span>
-            <span class="metric-label">sistemas integrados en cada proyecto</span>
+            <span class="metric-num" data-count="100" data-suffix="%">0</span>
+            <span class="metric-label">garantía mano de obra</span>
           </div>
           <div class="metric reveal">
-            <span class="metric-num" data-count="100" data-suffix="%">0</span>
-            <span class="metric-label">cobertura de garantía en mano de obra</span>
+            <span class="metric-num" data-count="4">0</span>
+            <span class="metric-label">sistemas integrados por proyecto</span>
           </div>
         </div>
         <p class="proof-sectors reveal">
-          Bunkers · Datacenters · Hoteles · Planta de alimentos · Concentrados · Propiedad Horizontal · Gobierno · Industria
+          Bunkers · Datacenters · Hoteles · Plantas de alimentos · Propiedad Horizontal · Gobierno · Industria farmacéutica
         </p>
+        <div class="proof-brands reveal">
+          <span class="proof-brands-label">Marcas certificadas</span>
+          <div class="proof-brands-list">
+            <span class="proof-brand">Honeywell</span>
+            <span class="proof-brand">Notifier</span>
+            <span class="proof-brand">3M</span>
+            <span class="proof-brand">Gamewell</span>
+          </div>
+        </div>
       </div>
     </section>
 
@@ -738,9 +756,9 @@
       <div class="container">
         <div class="maint-card reveal">
           <p class="maint-label">MANTENIMIENTO PREVENTIVO</p>
-          <h2>¿Hace más de 6 meses que no<br>revisas tu sistema?</h2>
-          <p>El mantenimiento preventivo semestral no es un gasto. Es la única forma de saber que el sistema va a responder cuando ocurra lo inevitable.</p>
-          <a href="#contacto" class="btn btn-primary">Agenda una revisión →</a>
+          <h2>Tu sistema lleva meses<br>sin una prueba real.</h2>
+          <p>NFPA exige revisión semestral. Las aseguradoras la exigen. Y cuando falla un sistema mal mantenido, la responsabilidad cae sobre quien firmó el contrato de instalación.</p>
+          <a href="#contacto" class="btn btn-primary">Agendar revisión →</a>
         </div>
       </div>
     </section>
@@ -753,7 +771,7 @@
           <!-- Form -->
           <div class="contact-form-col">
             <p class="section-tag">Contacto</p>
-            <h2>Hablemos de<br>tu proyecto.</h2>
+            <h2>Cuéntanos qué<br>necesitas proteger.</h2>
             <form class="contact-form" id="contactForm" novalidate>
               <div class="form-row">
                 <div class="form-group">
@@ -773,7 +791,7 @@
                 <div class="form-group">
                   <label for="f-servicio">Servicio <span aria-hidden="true">*</span></label>
                   <select id="f-servicio" name="servicio" required>
-                    <option value="">Seleccionar…</option>
+                    <option value="" disabled selected>Seleccionar servicio…</option>
                     <option value="Incendio">Redes contra incendio</option>
                     <option value="Acceso">Control de acceso</option>
                     <option value="Video">Videovigilancia</option>
@@ -785,9 +803,9 @@
               </div>
               <div class="form-group">
                 <label for="f-mensaje">Mensaje</label>
-                <textarea id="f-mensaje" name="mensaje" rows="4" placeholder="Cuéntanos sobre tu proyecto o instalación actual…"></textarea>
+                <textarea id="f-mensaje" name="mensaje" rows="4" placeholder="Describe el espacio, el riesgo o el sistema que quieres revisar. Respondemos en menos de 24 horas."></textarea>
               </div>
-              <button type="submit" class="btn btn-primary btn-full">Enviar mensaje</button>
+              <button type="submit" class="btn btn-primary btn-full">Enviar consulta</button>
             </form>
           </div>
 
@@ -838,7 +856,7 @@
   <!-- ═══ FOOTER ═══ -->
   <footer class="footer" aria-label="Pie de página">
     <div class="footer-inner">
-      <span class="footer-copy">© 2025 GEDIM — Seguridad integrada</span>
+      <span class="footer-copy">© 2025 GEDIM · Seguridad Integrada · Bogotá, Colombia</span>
       <nav class="footer-links" aria-label="Legal">
         <a href="#">Tratamiento de datos</a>
         <a href="#">Garantía</a>
@@ -849,7 +867,7 @@
   <!-- Scripts — GSAP from CDN, no ES modules, IIFE pattern -->
   <script defer src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
   <script defer src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
-  <script defer src="main.js?v=20260708p"></script>
+  <script defer src="main.js?v=20260709k"></script>
   <!-- Water particle canvas — fixed, above hero content, below nav -->
   <canvas id="sprinklerCanvas" class="sprinkler-canvas" aria-hidden="true"></canvas>
   <!-- Fire alarm banner (bottom) — hidden until fire cycle triggers -->
