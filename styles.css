@@ -229,8 +229,8 @@ ul { list-style: none; }
 /* ── Spline robot (left) ── */
 .header-robot {
   width: 100px;
-  height: 160px;
-  overflow: visible;
+  height: 180px;
+  overflow: hidden;       /* clips viewer below 180px — hides Spline badge */
   flex-shrink: 0;
   position: relative;
   margin-left: calc(-1 * var(--gutter));
@@ -245,6 +245,8 @@ ul { list-style: none; }
   left: -20px;
   --spline-viewer-bg: transparent;
 }
+/* Belt-and-suspenders: hide Spline branding via shadow-part if supported */
+.header-robot spline-viewer::part(logo) { display: none !important; }
 
 /* ── GEDIM logo ── */
 .header-logo {

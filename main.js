@@ -824,6 +824,31 @@
   }
 
   /* ─── BOOT ────────────────────────────────────────────────────── */
+  /* ─── ROBOT MOUSE TRACKING (page-wide) ─────────────────────── */
+  function initRobotTracking() {
+    var robotEl = document.querySelector(".header-robot");
+    if (!robotEl || !fineHover) return;
+
+    var curX = 0, tgtX = 0;
+    var curY = 0, tgtY = 0;
+
+    window.addEventListener("mousemove", function (e) {
+      /* Normalise mouse to −1…+1 across full viewport */
+      var nx = (e.clientX / window.innerWidth)  * 2 - 1;
+      var ny = (e.clientY / window.innerHeight) * 2 - 1;
+      tgtX = -nx * 18;  /* ±18° rotateY — negative so robot faces the cursor */
+      tgtY =  ny * 8;   /* ±8°  rotateX — tilts gently up/down */
+    }, { passive: true });
+
+    (function loop() {
+      curX += (tgtX - curX) * 0.05;
+      curY += (tgtY - curY) * 0.05;
+      robotEl.style.transform =
+        "perspective(500px) rotateY(" + curX.toFixed(2) + "deg) rotateX(" + curY.toFixed(2) + "deg)";
+      requestAnimationFrame(loop);
+    })();
+  }
+
   function boot() {
     safe(initNav,           "initNav");
     safe(initSmoothScroll,  "initSmoothScroll");
@@ -837,8 +862,9 @@
     safe(initNetworkPulse,  "initNetworkPulse");
     safe(initReveals,       "initReveals");
     safe(initCounters,      "initCounters");
-    safe(initContactForm,   "initContactForm");
-    safe(initGSAP,          "initGSAP");
+    safe(initContactForm,    "initContactForm");
+    safe(initGSAP,           "initGSAP");
+    safe(initRobotTracking,  "initRobotTracking");
 
     document.documentElement.classList.add("is-ready");
   }
