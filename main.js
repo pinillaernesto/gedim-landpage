@@ -826,35 +826,33 @@
   /* ─── BOOT ────────────────────────────────────────────────────── */
   /* ─── ROBOT MOUSE TRACKING (page-wide) ─────────────────────── */
   /*
-    Synthetic events are blocked by Spline (isTrusted = false).
-    Instead we CSS-rotate the spline-viewer element itself around the
-    robot's head position. Because the viewer renders a 3D scene, a
-    CSS perspective+rotateY looks like the robot physically turning —
-    not like a flat image tilting. The overflow:hidden on the container
-    still clips the Spline badge at the bottom.
+    We cannot inject trusted mouse events into Spline (isTrusted=false blocks them).
+    Applying transform directly to <spline-viewer> is also unreliable — Spline's
+    own render loop can overwrite it.
+
+    Solution: a plain <div id="robotGimbal"> wraps the robot container.
+    We rotate THAT div. It has no competing library, no overflow:hidden,
+    so the perspective transform is guaranteed to take effect and stay.
+    The inner .header-robot keeps overflow:hidden just to clip the Spline badge.
   */
   function initRobotTracking() {
-    var sv = document.querySelector(".header-robot spline-viewer");
-    if (!sv || !fineHover) return;
+    var gimbal = document.getElementById("robotGimbal");
+    if (!gimbal || !fineHover) return;
 
     var curX = 0, tgtX = 0, curY = 0, tgtY = 0;
-
-    /* Anchor rotation at the robot's head — (70px, 57px) in viewer-local
-       space lands near the head centre of the 140×240 rendered scene. */
-    sv.style.transformOrigin = "70px 57px";
 
     window.addEventListener("mousemove", function (e) {
       var nx = (e.clientX / window.innerWidth)  * 2 - 1; /* −1=left … +1=right */
       var ny = (e.clientY / window.innerHeight) * 2 - 1; /* −1=top  … +1=bottom */
-      tgtX = -nx * 30;  /* ±30° rotateY — faces cursor left / right */
-      tgtY =  ny * 14;  /* ±14° rotateX — tilts up / down */
+      tgtX = -nx * 35;  /* ±35° rotateY — robot turns left/right to face cursor */
+      tgtY =  ny * 15;  /* ±15° rotateX — slight up/down tilt                   */
     }, { passive: true });
 
     (function loop() {
-      curX += (tgtX - curX) * 0.05;
-      curY += (tgtY - curY) * 0.05;
-      sv.style.transform =
-        "perspective(400px) rotateY(" + curX.toFixed(2) + "deg)" +
+      curX += (tgtX - curX) * 0.07;
+      curY += (tgtY - curY) * 0.07;
+      gimbal.style.transform =
+        "perspective(350px) rotateY(" + curX.toFixed(2) + "deg)" +
         " rotateX(" + curY.toFixed(2) + "deg)";
       requestAnimationFrame(loop);
     })();

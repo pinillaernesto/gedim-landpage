@@ -227,22 +227,28 @@ ul { list-style: none; }
 }
 
 /* ── Spline robot (left) ── */
+/* robot-gimbal: plain flex child — JS rotates this, no overflow:hidden so
+   the 3D perspective transform is never clipped by the parent             */
+.robot-gimbal {
+  flex-shrink: 0;
+  align-self: center;
+  margin-left: calc(-1 * var(--gutter));
+  z-index: 1;
+}
+
+/* header-robot: pure clip window — hides the Spline badge at the bottom */
 .header-robot {
   width: 65px;
-  height: 90px;           /* same visual height as .header-logo-img (90px) */
+  height: 90px;
   overflow: hidden;
-  flex-shrink: 0;
   position: relative;
-  margin-left: calc(-1 * var(--gutter));
-  align-self: center;     /* vertically centred in the 110px brand bar */
-  z-index: 1;
 }
 .header-robot spline-viewer {
   position: absolute;
   width: 140px;
   height: 240px;
-  top: -25px;             /* shift scene up so the head is centred in the crop */
-  left: -38px;            /* centre robot horizontally in the 65px container */
+  top: -25px;
+  left: -38px;
   --spline-viewer-bg: transparent;
 }
 /* Belt-and-suspenders: hide Spline branding via shadow-part if supported */
