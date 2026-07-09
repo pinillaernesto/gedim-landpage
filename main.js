@@ -826,34 +826,49 @@
   /* ─── BOOT ────────────────────────────────────────────────────── */
   /* ─── ROBOT MOUSE TRACKING (page-wide) ─────────────────────── */
   /*
-    We cannot inject trusted mouse events into Spline (isTrusted=false blocks them).
-    Applying transform directly to <spline-viewer> is also unreliable — Spline's
-    own render loop can overwrite it.
-
-    Solution: a plain <div id="robotGimbal"> wraps the robot container.
-    We rotate THAT div. It has no competing library, no overflow:hidden,
-    so the perspective transform is guaranteed to take effect and stay.
-    The inner .header-robot keeps overflow:hidden just to clip the Spline badge.
+    Exact same mechanism as initCamera():
+      1. Read pivot from gimbal's bounding rect (like #cameraPivot)
+      2. atan2(dy, dx) gives the angle from robot to cursor
+      3. Lerp cur toward tgt at the same rate as the camera
+      4. Apply as rotateY + rotateX on the gimbal wrapper
+         (camera uses SVG rotate; robot uses CSS perspective rotate — same idea)
   */
   function initRobotTracking() {
     var gimbal = document.getElementById("robotGimbal");
-    if (!gimbal || !fineHover) return;
+    if (!gimbal) return;                       /* no fineHover guard — always run */
 
-    var curX = 0, tgtX = 0, curY = 0, tgtY = 0;
+    var cur = 0, tgt = 0;
 
     window.addEventListener("mousemove", function (e) {
-      var nx = (e.clientX / window.innerWidth)  * 2 - 1; /* −1=left … +1=right */
-      var ny = (e.clientY / window.innerHeight) * 2 - 1; /* −1=top  … +1=bottom */
-      tgtX = -nx * 35;  /* ±35° rotateY — robot turns left/right to face cursor */
-      tgtY =  ny * 15;  /* ±15° rotateX — slight up/down tilt                   */
+      var r   = gimbal.getBoundingClientRect();
+      var px  = r.left + r.width  / 2;        /* pivot = gimbal centre on screen */
+      var py  = r.top  + r.height / 2;
+      var dx  = e.clientX - px;
+      var dy  = e.clientY - py;
+      var raw = Math.atan2(dy, dx) * 180 / Math.PI;
+
+      /* Shortest-arc (same fix as camera spin bug) */
+      var diff = raw - tgt;
+      while (diff >  180) diff -= 360;
+      while (diff < -180) diff += 360;
+      tgt = Math.max(-160, Math.min(160, tgt + diff));
     }, { passive: true });
 
     (function loop() {
-      curX += (tgtX - curX) * 0.07;
-      curY += (tgtY - curY) * 0.07;
+      cur += (tgt - cur) * 0.08;              /* same lerp rate as camera */
+
+      /* Convert the 2D tracking angle to 3D head orientation:
+           angle   0° (right) → rotateY −45° (look right)
+           angle  90° (down)  → rotateX +20° (look down)
+           angle 180° (left)  → rotateY +45° (look left)
+           angle −90° (up)    → rotateX −20° (look up)          */
+      var rad = cur * Math.PI / 180;
+      var ry  = -Math.cos(rad) * 45;
+      var rx  =  Math.sin(rad) * 20;
+
       gimbal.style.transform =
-        "perspective(350px) rotateY(" + curX.toFixed(2) + "deg)" +
-        " rotateX(" + curY.toFixed(2) + "deg)";
+        "perspective(350px) rotateX(" + rx.toFixed(2) + "deg)" +
+        " rotateY(" + ry.toFixed(2) + "deg)";
       requestAnimationFrame(loop);
     })();
   }
