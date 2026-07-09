@@ -826,27 +826,42 @@
   /* ─── BOOT ────────────────────────────────────────────────────── */
   /* ─── ROBOT MOUSE TRACKING (page-wide) ─────────────────────── */
   function initRobotTracking() {
-    var robotEl = document.querySelector(".header-robot");
-    if (!robotEl || !fineHover) return;
+    var sv = document.querySelector(".header-robot spline-viewer");
+    if (!sv || !fineHover) return;
 
-    var curX = 0, tgtX = 0;
-    var curY = 0, tgtY = 0;
+    var canvas = null;  /* lazy-resolved once Spline finishes loading */
+
+    function getCanvas() {
+      if (canvas) return canvas;
+      try { canvas = sv.shadowRoot && sv.shadowRoot.querySelector("canvas"); }
+      catch (e) {}
+      return canvas;
+    }
 
     window.addEventListener("mousemove", function (e) {
-      /* Normalise mouse to −1…+1 across full viewport */
-      var nx = (e.clientX / window.innerWidth)  * 2 - 1;
-      var ny = (e.clientY / window.innerHeight) * 2 - 1;
-      tgtX = -nx * 18;  /* ±18° rotateY — negative so robot faces the cursor */
-      tgtY =  ny * 8;   /* ±8°  rotateX — tilts gently up/down */
-    }, { passive: true });
+      var cnv = getCanvas();
+      if (!cnv) return;
 
-    (function loop() {
-      curX += (tgtX - curX) * 0.05;
-      curY += (tgtY - curY) * 0.05;
-      robotEl.style.transform =
-        "perspective(500px) rotateY(" + curX.toFixed(2) + "deg) rotateX(" + curY.toFixed(2) + "deg)";
-      requestAnimationFrame(loop);
-    })();
+      var r = cnv.getBoundingClientRect();
+
+      /* When cursor is INSIDE the canvas, Spline already handles it natively.
+         Only inject when cursor is OUTSIDE to extend tracking to the full page. */
+      var inside = e.clientX >= r.left && e.clientX <= r.right &&
+                   e.clientY >= r.top  && e.clientY <= r.bottom;
+      if (inside) return;
+
+      /* Map full-viewport mouse position → equivalent position inside the canvas.
+         The robot's head will follow as if the cursor were at that canvas position. */
+      var cx = r.left + (e.clientX / window.innerWidth)  * r.width;
+      var cy = r.top  + (e.clientY / window.innerHeight) * r.height;
+
+      try {
+        cnv.dispatchEvent(new MouseEvent("mousemove", {
+          bubbles: false, cancelable: true, view: window,
+          clientX: cx, clientY: cy
+        }));
+      } catch (ex) {}
+    }, { passive: true });
   }
 
   function boot() {
