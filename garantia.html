@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#070B10">
+  <title>Garantía — GEDIM</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,700;1,9..40,400&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --bg:           #070B10;
+      --bg-card:      #0D1219;
+      --accent:       #00FF88;
+      --text-primary: #E8EDF2;
+      --text-muted:   #7A8A99;
+      --border:       rgba(0,255,136,.12);
+      --sans: "DM Sans", system-ui, sans-serif;
+      --radius: 6px;
+    }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: var(--sans);
+      background: var(--bg);
+      color: var(--text-primary);
+      min-height: 100vh;
+      line-height: 1.7;
+    }
+
+    /* ── Top bar ── */
+    .topbar {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: rgba(7,11,16,.92);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+      padding: .875rem 1.5rem;
+      display: flex;
+      align-items: center;
+      gap: 1.5rem;
+    }
+    .topbar-back {
+      font-size: .85rem;
+      color: var(--text-muted);
+      display: inline-flex;
+      align-items: center;
+      gap: .4rem;
+      transition: color .2s;
+      text-decoration: none;
+    }
+    .topbar-back:hover { color: var(--accent); }
+    .topbar-back svg { flex-shrink: 0; }
+    .topbar-title {
+      font-size: .875rem;
+      font-weight: 600;
+      color: var(--text-muted);
+      letter-spacing: .05em;
+      text-transform: uppercase;
+    }
+
+    /* ── Content ── */
+    .page-wrap {
+      max-width: 760px;
+      margin: 0 auto;
+      padding: 3rem 1.5rem 5rem;
+    }
+    .page-tag {
+      font-size: .75rem;
+      font-weight: 600;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 1rem;
+    }
+    h1 {
+      font-size: clamp(1.75rem, 4vw, 2.5rem);
+      font-weight: 700;
+      line-height: 1.15;
+      letter-spacing: -.03em;
+      margin-bottom: 2rem;
+    }
+    .legal-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 2rem 2.25rem;
+    }
+    .legal-card h2 {
+      font-size: 1rem;
+      font-weight: 600;
+      color: var(--accent);
+      letter-spacing: .08em;
+      text-transform: uppercase;
+      margin-top: 2rem;
+      margin-bottom: .75rem;
+    }
+    .legal-card h2:first-child { margin-top: 0; }
+    .legal-card p {
+      font-size: .9375rem;
+      color: var(--text-primary);
+      margin-bottom: 1rem;
+    }
+    .placeholder-block {
+      border: 1.5px dashed rgba(0,255,136,.25);
+      border-radius: var(--radius);
+      padding: 2rem;
+      text-align: center;
+      color: var(--text-muted);
+      font-size: .9rem;
+      margin-top: 1.5rem;
+    }
+    .placeholder-block strong { display: block; color: var(--accent); margin-bottom: .5rem; font-size: 1rem; }
+
+    /* ── Footer ── */
+    .page-footer {
+      text-align: center;
+      padding: 2rem 1.5rem;
+      font-size: .8125rem;
+      color: var(--text-muted);
+      border-top: 1px solid var(--border);
+    }
+  </style>
+</head>
+<body>
+
+  <nav class="topbar" aria-label="Navegación de página">
+    <a href="index.html" class="topbar-back" aria-label="Volver al sitio">
+      <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+        <path d="M10 3L5 8L10 13" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+      Volver
+    </a>
+    <span class="topbar-title">GEDIM · Legal</span>
+  </nav>
+
+  <main class="page-wrap">
+    <p class="page-tag">Legal</p>
+    <h1>Garantía</h1>
+
+    <div class="legal-card">
+
+      <div class="placeholder-block">
+        <strong>[ Agregar el texto de garantía acá ]</strong>
+        Reemplaza este bloque con los términos y condiciones de garantía de GEDIM.
+      </div>
+
+    </div>
+  </main>
+
+  <footer class="page-footer">
+    © 2025 GEDIM · Seguridad Integrada · Bogotá, Colombia
+  </footer>
+
+</body>
+</html>

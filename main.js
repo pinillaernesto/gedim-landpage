@@ -633,28 +633,33 @@
 
   /* ─── NETWORK PULSE ───────────────────────────────────────────── */
   function initNetworkPulse() {
-    var pulses = [$("#np0"), $("#np1"), $("#np2")];
+    var pulses = [$("#np0"), $("#np1"), $("#np2"), $("#np3"), $("#np4"), $("#np5")];
     if (!pulses[0]) return;
 
-    /* Routes: each from hub (130,80) to an endpoint */
+    /* Routes: hub (130,80) → each of the 6 nodes */
     var routes = [
-      [{ x: 130, y: 80 }, { x: 38,  y: 28  }],
-      [{ x: 130, y: 80 }, { x: 222, y: 28  }],
-      [{ x: 130, y: 80 }, { x: 130, y: 142 }]
+      [{ x: 130, y: 80 }, { x: 38,  y: 28  }],  /* Extinción  */
+      [{ x: 130, y: 80 }, { x: 222, y: 28  }],  /* Cámaras    */
+      [{ x: 130, y: 80 }, { x: 130, y: 142 }],  /* Cableado   */
+      [{ x: 130, y: 80 }, { x: 130, y: 18  }],  /* Detección  */
+      [{ x: 130, y: 80 }, { x: 38,  y: 132 }],  /* Acceso     */
+      [{ x: 130, y: 80 }, { x: 222, y: 132 }]   /* RFID       */
     ];
 
-    var states = [0, 0.34, 0.67];
+    /* Staggered offsets so every pulse is at a different position */
+    var states = [0, 0.34, 0.67, 0.17, 0.50, 0.84];
+    /* Slightly different speeds for organic feel */
+    var speeds = [0.0070, 0.0060, 0.0080, 0.0065, 0.0075, 0.0055];
 
     function lerp(a, b, t) {
       return { x: a.x + (b.x - a.x) * t, y: a.y + (b.y - a.y) * t };
     }
 
-    /* Make pulses visible */
     pulses.forEach(function (p) { if (p) p.setAttribute("opacity", "0.9"); });
 
     (function animate() {
-      for (var i = 0; i < 3; i++) {
-        states[i] = (states[i] + 0.007) % 1;
+      for (var i = 0; i < 6; i++) {
+        states[i] = (states[i] + speeds[i]) % 1;
         var t = states[i];
         /* Ping-pong: 0→1→0 */
         var progress = t < 0.5 ? t * 2 : (1 - t) * 2;

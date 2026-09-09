@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#070B10">
+  <title>Política de Tratamiento de Datos — GEDIM</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,700;1,9..40,400&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --bg:           #070B10;
+      --bg-card:      #0D1219;
+      --accent:       #00FF88;
+      --text-primary: #E8EDF2;
+      --text-muted:   #7A8A99;
+      --border:       rgba(0,255,136,.12);
+      --sans: "DM Sans", system-ui, sans-serif;
+      --radius: 6px;
+    }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: var(--sans);
+      background: var(--bg);
+      color: var(--text-primary);
+      min-height: 100vh;
+      line-height: 1.7;
+    }
+
+    /* ── Top bar ── */
+    .topbar {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: rgba(7,11,16,.92);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+      padding: .875rem 1.5rem;
+      display: flex;
+      align-items: center;
+      gap: 1.5rem;
+    }
+    .topbar-back {
+      font-size: .85rem;
+      color: var(--text-muted);
+      display: inline-flex;
+      align-items: center;
+      gap: .4rem;
+      transition: color .2s;
+      text-decoration: none;
+    }
+    .topbar-back:hover { color: var(--accent); }
+    .topbar-back svg { flex-shrink: 0; }
+    .topbar-title {
+      font-size: .875rem;
+      font-weight: 600;
+      color: var(--text-muted);
+      letter-spacing: .05em;
+      text-transform: uppercase;
+    }
+
+    /* ── Content ── */
+    .page-wrap {
+      max-width: 760px;
+      margin: 0 auto;
+      padding: 3rem 1.5rem 5rem;
+    }
+    .page-tag {
+      font-size: .75rem;
+      font-weight: 600;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 1rem;
+    }
+    h1 {
+      font-size: clamp(1.75rem, 4vw, 2.5rem);
+      font-weight: 700;
+      line-height: 1.15;
+      letter-spacing: -.03em;
+      margin-bottom: 2rem;
+    }
+    .legal-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 2rem 2.25rem;
+    }
+    .legal-card h2 {
+      font-size: 1rem;
+      font-weight: 600;
+      color: var(--accent);
+      letter-spacing: .08em;
+      text-transform: uppercase;
+      margin-top: 2rem;
+      margin-bottom: .75rem;
+    }
+    .legal-card h2:first-child { margin-top: 0; }
+    .legal-card p {
+      font-size: .9375rem;
+      color: var(--text-primary);
+      margin-bottom: 1rem;
+    }
+    .legal-card ul {
+      padding-left: 1.25rem;
+      margin-bottom: 1rem;
+    }
+    .legal-card li {
+      font-size: .9375rem;
+      color: var(--text-primary);
+      margin-bottom: .5rem;
+    }
+    .legal-card strong { color: var(--text-primary); font-weight: 600; }
+    .legal-card a { color: var(--accent); text-underline-offset: 3px; }
+    .legal-card hr {
+      border: none;
+      border-top: 1px solid var(--border);
+      margin: 1.75rem 0;
+    }
+
+    /* ── Footer ── */
+    .page-footer {
+      text-align: center;
+      padding: 2rem 1.5rem;
+      font-size: .8125rem;
+      color: var(--text-muted);
+      border-top: 1px solid var(--border);
+    }
+  </style>
+</head>
+<body>
+
+  <nav class="topbar" aria-label="Navegación de página">
+    <a href="index.html" class="topbar-back" aria-label="Volver al sitio">
+      <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+        <path d="M10 3L5 8L10 13" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+      Volver
+    </a>
+    <span class="topbar-title">GEDIM · Legal</span>
+  </nav>
+
+  <main class="page-wrap">
+    <p class="page-tag">Legal</p>
+    <h1>Política de Tratamiento<br>de Datos</h1>
+
+    <div class="legal-card">
+
+      <p>Conforme a lo previsto en el artículo 15 de la Constitución Política de Colombia y la legislación aplicable (Ley 1266 de 2008, Ley 1581 de 2012, Decreto 1377 de 2013 y todas aquellas normas que las reglamenten, adicionen, deroguen o modifiquen), tenemos una clara política de privacidad y protección de los datos personales: GEDIM no obtiene información personal de terceros que tengan una relación comercial o jurídica con la Compañía, incluyéndolo a usted, a los Clientes, Empleados o Proveedores, a menos que estos la hayan suministrado voluntariamente.</p>
+
+      <hr>
+
+      <h2>Definiciones</h2>
+      <p>Para la interpretación de esta Política, le pedimos tener en cuenta las siguientes definiciones:</p>
+      <ul>
+        <li><strong>Dato personal:</strong> Cualquier información vinculada o que pueda asociarse a una o varias personas naturales determinadas o determinables.</li>
+        <li><strong>Datos sensibles:</strong> Aquellos datos que afectan la intimidad del Titular o cuyo uso indebido puede generar su discriminación.</li>
+        <li><strong>Encargado del Tratamiento:</strong> Persona natural o jurídica, pública o privada, que por sí misma o en asocio con otros, realice el Tratamiento de datos personales por cuenta de la Compañía como Responsable de los datos.</li>
+        <li><strong>Política de Tratamiento:</strong> Se refiere a este documento, como política de tratamiento de datos personales aplicada por la Compañía de conformidad con los lineamientos de la legislación vigente en la materia.</li>
+        <li><strong>Proveedor:</strong> Toda persona natural o jurídica que preste algún servicio a la Compañía.</li>
+        <li><strong>Responsable del Tratamiento:</strong> Persona natural o jurídica, pública o privada, que por sí misma o en asocio con otros, decida sobre la base de datos y/o el Tratamiento de los datos.</li>
+        <li><strong>Titular:</strong> Persona natural cuyos datos personales sean objeto de Tratamiento, sea cliente, proveedor, empleado, o cualquier tercero que, en razón de una relación comercial o jurídica, suministre datos personales.</li>
+        <li><strong>Trabajador:</strong> Toda persona natural que preste un servicio a la Compañía en virtud de un contrato laboral.</li>
+        <li><strong>Transmisión:</strong> Comunicación de datos personales por parte del Responsable al Encargado, ubicado dentro o fuera del territorio nacional, para que el Encargado, por cuenta del Responsable, trate datos personales.</li>
+        <li><strong>Tratamiento:</strong> Cualquier operación o conjunto de operaciones sobre datos personales, tales como la recolección, almacenamiento, uso, circulación o eliminación.</li>
+      </ul>
+      <p>Para el entendimiento de los términos que no se encuentran incluidos dentro del listado anterior, usted deberá remitirse a la legislación vigente, en especial a la Ley 1581 de 2012 y al Decreto 1377 de 2013.</p>
+
+      <hr>
+
+      <h2>Tipo de información sujeta a Tratamiento</h2>
+      <p>Para el desarrollo del objeto de la Compañía y por la relación que se establezca entre usted y la Compañía, ésta recolecta, almacena y usa datos personales. Los datos personales e información incluyen entre otros:</p>
+
+      <p><strong>Empleado / Contratista</strong></p>
+      <ul>
+        <li>Trabajador y Grupo Familiar: nombre, identificación, dirección, teléfono, nombre de esposa e hijos, identificación de hijos, afiliaciones a la seguridad social, póliza médica, edad, fecha de nacimiento, información de estudios, estado de salud.</li>
+        <li>Hoja de vida, educación, experiencia, vínculos con entidades y empresas.</li>
+        <li>Salario y otros pagos.</li>
+        <li>Contrato laboral.</li>
+        <li>Afiliación EPS, fondo de pensiones, ARL, Caja de compensación.</li>
+      </ul>
+
+      <p><strong>Cliente</strong></p>
+      <ul>
+        <li>Nombre del Cliente o razón social, número de identificación o NIT con dígito de verificación, lugar de domicilio, dirección, teléfonos, correo electrónico.</li>
+        <li>Nombre del gerente general o representante legal y dirección, teléfonos, correo electrónico.</li>
+        <li>Información bancaria: nombre del titular de la cuenta, número de cuenta y nombre o código del banco.</li>
+      </ul>
+
+      <p><strong>Proveedor</strong></p>
+      <ul>
+        <li>Nombre del Proveedor o razón social, número de identificación o NIT con dígito de verificación, lugar de domicilio, dirección, teléfonos, correo electrónico.</li>
+        <li>Nombre del gerente general o representante legal y dirección, teléfonos, correo electrónico.</li>
+        <li>Información bancaria: nombre del titular de la cuenta, número de cuenta y nombre o código del banco.</li>
+      </ul>
+
+      <hr>
+
+      <h2>Uso y finalidad del Tratamiento</h2>
+      <p>Los datos personales son utilizados para:</p>
+      <ul>
+        <li>Facturación, contratos, pago de obligaciones, envío de información a entidades gubernamentales o judiciales por solicitud expresa.</li>
+        <li>Envío/recepción de mensajes con fines comerciales, publicitarios y/o de atención al cliente.</li>
+        <li>Registro de la información de clientes, empleados y proveedores en la base de datos de la Compañía.</li>
+        <li>Recolección de datos para el cumplimiento de los deberes que como responsable de la información le corresponde a la Compañía.</li>
+        <li>Con propósitos de seguridad o prevención de fraude.</li>
+        <li>Para proporcionar servicio al cliente.</li>
+        <li>Cualquier otra finalidad requerida para el desarrollo del objeto de la Compañía.</li>
+      </ul>
+      <p>Si usted nos proporciona Datos Personales, esta información será utilizada sólo para los propósitos aquí señalados, y no procederemos a vender, licenciar, transmitir o divulgar la misma fuera de la Compañía a menos que:</p>
+      <ul>
+        <li>Usted nos autorice expresamente a hacerlo.</li>
+        <li>Sea necesario para permitir a nuestros contratistas o agentes prestar los servicios que les hemos encomendado.</li>
+        <li>Tenga relación con una fusión, consolidación, adquisición, desinversión u otro proceso de restructuración.</li>
+        <li>Sea requerido o permitido por la ley.</li>
+      </ul>
+      <p>La Compañía podrá subcontratar a terceros para el procesamiento de determinadas funciones o información. Cuando subcontratamos con terceros el procesamiento de su información personal, advertimos a dichos terceros sobre la necesidad de protegerla con medidas de seguridad apropiadas, les prohibimos el uso de su información personal para fines propios y solicitamos que no la divulguen a otros.</p>
+      <p>Una vez cese la necesidad de tratamiento de sus datos, estos podrán ser eliminados de las bases de datos de GEDIM o archivados en términos seguros, y sólo serán divulgados cuando la ley lo exija. Sin embargo, los datos no serán eliminados si la conservación de los mismos se hace necesaria para dar cumplimiento a una obligación o contrato.</p>
+
+      <hr>
+
+      <h2>Derechos del Titular</h2>
+      <p>De conformidad con el artículo 8 de la Ley 1581 de 2012, como titular tiene los siguientes derechos:</p>
+      <ul>
+        <li>Conocer, actualizar y rectificar sus datos personales.</li>
+        <li>Solicitar prueba de la autorización otorgada a la Compañía como Responsable del Tratamiento, salvo cuando expresamente se exceptúe como requisito para el Tratamiento.</li>
+        <li>Ser informado respecto del uso que le ha dado a sus datos personales.</li>
+        <li>Revocar la autorización y/o solicitar la supresión del dato cuando en el Tratamiento no se respeten los principios, derechos y garantías constitucionales y legales.</li>
+        <li>Acceder en forma gratuita a sus datos personales que hayan sido objeto de Tratamiento.</li>
+      </ul>
+
+      <hr>
+
+      <h2>Procedimiento para el ejercicio de sus derechos</h2>
+      <p>Si tiene preguntas acerca de esta Política, o cualquier inquietud o reclamo, comuníquese con nosotros a través de: <a href="mailto:tecnologia@gedimcolombia.co">tecnologia@gedimcolombia.co</a></p>
+      <p>La consulta será atendida en un término máximo de <strong>diez (10) días hábiles</strong> contados a partir de la fecha de recibo. Este plazo podrá ser ampliado por una sola ocasión, informándole los motivos de la extensión y la fecha de respuesta.</p>
+      <p>Para la correcta consideración de su solicitud, envíe: identidad del solicitante, número de identificación, dirección de notificaciones y los documentos que quiera hacer valer. En el asunto escriba: <strong>Tratamiento de Datos</strong>.</p>
+      <p>Si su solicitud no tiene los datos suficientes, se le requerirá dentro de los cinco (5) días siguientes para que subsane sus fallas. Después de dos (2) meses sin subsanar, la Compañía entenderá que ha desistido de su solicitud.</p>
+
+      <hr>
+
+      <h2>Modificación de esta política</h2>
+      <p>Esta política puede ser modificada en cualquier momento, avisándole del cambio y poniéndose a su disposición la última versión.</p>
+
+      <h2>Vigencia de las bases de datos</h2>
+      <p>La vigencia de la base de datos será el tiempo razonable y necesario para cumplir con las finalidades del tratamiento de la información.</p>
+
+    </div>
+  </main>
+
+  <footer class="page-footer">
+    © 2025 GEDIM · Seguridad Integrada · Bogotá, Colombia
+  </footer>
+
+</body>
+</html>
