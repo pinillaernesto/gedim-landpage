@@ -1141,6 +1141,7 @@ ul { list-style: none; }
   transition: opacity .2s;
 }
 .proof-brand:hover .brand-logo { opacity: .9; }
+.brand-logo--wide { height: 80px; }
 
 /* =============================================================
    12. MANTENIMIENTO
@@ -1341,7 +1342,7 @@ ul { list-style: none; }
    ============================================================= */
 .wa-float {
   position: fixed;
-  bottom: 1.5rem;
+  bottom: 5rem;
   right: 1.5rem;
   z-index: 500;
   width: 56px;
