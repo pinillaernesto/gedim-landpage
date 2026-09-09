@@ -314,12 +314,12 @@ ul { list-style: none; }
   font-weight: 700;
   letter-spacing: .08em;
   text-transform: uppercase;
-  color: var(--accent);
-  transition: opacity .2s;
+  color: var(--text-primary);
+  transition: color .2s;
   white-space: nowrap;
   line-height: 1.8;
 }
-.header-service-link:hover { opacity: .65; }
+.header-service-link:hover { color: var(--accent); }
 
 /* Scroll anchor offset for fixed header */
 .service-card[id] { scroll-margin-top: calc(var(--nav-h) + 1.5rem); }
