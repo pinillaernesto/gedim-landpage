@@ -1298,6 +1298,53 @@ ul { list-style: none; }
 .footer-links a:hover { color: var(--accent); }
 
 /* =============================================================
+   FORMULARIO — feedback de envío
+   ============================================================= */
+.form-feedback {
+  margin-top: .75rem;
+  font-size: .875rem;
+  min-height: 1.4em;
+  border-radius: var(--radius);
+  padding: 0;
+  transition: opacity .3s;
+}
+.form-feedback--ok {
+  color: var(--accent);
+  background: rgba(0,255,136,.08);
+  padding: .6rem 1rem;
+  border: 1px solid rgba(0,255,136,.2);
+}
+.form-feedback--err {
+  color: #ff6b6b;
+  background: rgba(255,107,107,.08);
+  padding: .6rem 1rem;
+  border: 1px solid rgba(255,107,107,.2);
+}
+
+/* =============================================================
+   WHATSAPP — botón flotante
+   ============================================================= */
+.wa-float {
+  position: fixed;
+  bottom: 1.5rem;
+  right: 1.5rem;
+  z-index: 500;
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  background: #25D366;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 16px rgba(37,211,102,.4);
+  transition: transform .2s var(--ease-bounce), box-shadow .2s;
+}
+.wa-float:hover {
+  transform: scale(1.1);
+  box-shadow: 0 6px 24px rgba(37,211,102,.55);
+}
+
+/* =============================================================
    15. REVEAL ANIMATIONS
    ============================================================= */
 .reveal {

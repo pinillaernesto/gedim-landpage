@@ -795,46 +795,55 @@
       f.addEventListener("change", function () { f.classList.remove("error"); });
     });
 
+    var submitBtn  = $("#contactSubmit");
+    var feedback   = $("#formFeedback");
+
     form.addEventListener("submit", function (e) {
       e.preventDefault();
 
+      /* Validación */
       var valid = true;
       required.forEach(function (f) {
         f.classList.remove("error");
-        if (!f.value.trim()) {
-          f.classList.add("error");
-          valid = false;
-        }
+        if (!f.value.trim()) { f.classList.add("error"); valid = false; }
       });
-
       if (!valid) {
         var firstErr = $(".error", form);
         if (firstErr) firstErr.focus();
         return;
       }
 
-      var d       = new FormData(form);
-      var nombre  = d.get("nombre")   || "";
-      var empresa = d.get("empresa")  || "";
-      var tel     = d.get("telefono") || "";
-      var srv     = d.get("servicio") || "";
-      var msg     = d.get("mensaje")  || "";
+      /* Estado de carga */
+      if (submitBtn) { submitBtn.disabled = true; submitBtn.textContent = "Enviando…"; }
+      if (feedback)  { feedback.className = "form-feedback"; feedback.textContent = ""; }
 
-      var subject = "Cotización GEDIM — " + srv + " — " + nombre;
-      var body    = [
-        "Nombre: " + nombre,
-        "Empresa: " + empresa,
-        "Teléfono: " + tel,
-        "Servicio: " + srv,
-        "",
-        "Mensaje:",
-        msg
-      ].join("\n");
+      var formData = new FormData(form);
 
-      window.location.href =
-        "mailto:tecnologia@gedimcolombia.co" +
-        "?subject=" + encodeURIComponent(subject) +
-        "&body="    + encodeURIComponent(body);
+      fetch("https://api.web3forms.com/submit", {
+        method: "POST",
+        body: formData
+      })
+      .then(function (res) { return res.json(); })
+      .then(function (data) {
+        if (data.success) {
+          if (feedback) {
+            feedback.className = "form-feedback form-feedback--ok";
+            feedback.textContent = "¡Mensaje enviado! Te contactamos en menos de 24 horas.";
+          }
+          form.reset();
+        } else {
+          throw new Error(data.message || "Error al enviar");
+        }
+      })
+      .catch(function () {
+        if (feedback) {
+          feedback.className = "form-feedback form-feedback--err";
+          feedback.textContent = "No pudimos enviar el mensaje. Escríbenos a tecnologia@gedimcolombia.co";
+        }
+      })
+      .finally(function () {
+        if (submitBtn) { submitBtn.disabled = false; submitBtn.textContent = "Enviar consulta"; }
+      });
     });
   }
 
