@@ -1118,24 +1118,29 @@ ul { list-style: none; }
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
-  gap: .75rem 2rem;
+  gap: 1rem 1.5rem;
 }
 .proof-brand {
-  font-size: .9375rem;
-  font-weight: 500;
-  color: rgba(255,255,255,.55);
-  letter-spacing: .04em;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(255,255,255,0.07);
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 8px;
+  padding: 14px 28px;
+  transition: background .2s;
 }
+.proof-brand:hover { background: rgba(255,255,255,0.12); }
 .brand-logo {
-  height: 44px;
+  height: 40px;
   width: auto;
   max-width: 160px;
   object-fit: contain;
-  filter: grayscale(1) brightness(10);
-  opacity: .55;
+  filter: grayscale(1);
+  opacity: .65;
   transition: opacity .2s;
 }
-.brand-logo:hover { opacity: .9; }
+.proof-brand:hover .brand-logo { opacity: .9; }
 
 /* =============================================================
    12. MANTENIMIENTO
